@@ -2,7 +2,7 @@
   "name": "stub-rp",
   "version": "1.0.0",
   "description": "A Stub implementation of a node js application that uses verify service provider prototype",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "tsc && npm run lint && ./node_modules/.bin/mocha ./build/test/*",
     "start": "tsc && node ./build/src/index.js",
