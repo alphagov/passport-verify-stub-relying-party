@@ -15,11 +15,13 @@ describe('Stub RP Application', function () {
     server.close()
   })
 
-  it('should say hello world', function () {
-    return fetch('http://localhost:3201/hello-world')
+  it('should render a form that would authenticate with SAML', function () {
+    return fetch('http://localhost:3201/verify/start')
       .then((res: Response) => res.text())
       .then((body: string) => {
-        assert.equal(body, 'Hello World!')
+        assert(body.includes('<form'))
+        assert(body.includes('samlRequest'))
+        assert(body.includes('relayState'))
       })
   })
 
