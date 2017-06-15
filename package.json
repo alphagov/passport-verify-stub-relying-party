@@ -21,7 +21,6 @@
     "@types/mocha": "^2.2.41",
     "@types/node": "^7.0.31",
     "@types/node-fetch": "^1.6.7",
-    "@types/passport": "^0.3.3",
     "mocha": "^3.4.2",
     "tslint": "^5.4.3",
     "tslint-config-standard": "^5.0.2",

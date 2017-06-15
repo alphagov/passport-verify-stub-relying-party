@@ -1,13 +1,16 @@
 import * as express from 'express'
 import * as passport from 'passport'
-import PassportVerifyStrategy from 'passport-verify'
+import { createStrategy } from 'passport-verify'
 
-const app: express.Application = express()
+export default function (options: any) {
+  const app: express.Application = express()
 
-passport.use(new PassportVerifyStrategy({
+  passport.use(createStrategy({
+    verifyServiceProviderHost: options.verifyServiceProviderHost
+  }))
 
-}))
-
-app.get('/verify/start', passport.authenticate('passport-verify'))
-
-export default app
+  app.get('/verify/start', (req, res, next) => {
+    passport.authenticate('passport-verify')(req, res, next)
+  })
+  return app
+}
