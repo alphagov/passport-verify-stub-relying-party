@@ -28,8 +28,8 @@ export function createApp (options: any) {
 
   passport.use(createStrategy({ verifyServiceProviderHost: options.verifyServiceProviderHost }))
 
-  app.get('/verify/start', passport.authenticate('passport-verify'))
-  app.post('/verify/response', passport.authenticate('passport-verify', {
+  app.get('/verify/start', passport.authenticate('verify'))
+  app.post('/verify/response', passport.authenticate('verify', {
     successRedirect: '/service-landing-page'
   }))
   app.get('/service-landing-page', (req, res) => {
