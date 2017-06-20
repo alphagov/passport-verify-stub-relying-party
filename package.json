@@ -4,7 +4,7 @@
   "description": "A Stub implementation of a node js application that uses verify service provider prototype",
   "main": "src/index.js",
   "scripts": {
-    "test": "tsc && npm run lint && ./node_modules/.bin/mocha ./build/test/*",
+    "test": "tsc && ./node_modules/.bin/mocha ./build/test/* && npm run lint",
     "start": "tsc && node ./build/src/index.js",
     "lint": "./node_modules/.bin/tslint -c tslint.json -p ."
   },
@@ -14,6 +14,8 @@
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "express-session": "^1.15.3",
+    "govuk_template_jinja": "^0.22.2",
+    "nunjucks": "^3.0.1",
     "passport": "^0.3.2",
     "passport-verify": "file:../passport-verify",
     "request": "^2.81.0",
@@ -26,6 +28,7 @@
     "@types/express-session": "^1.15.0",
     "@types/mocha": "^2.2.41",
     "@types/node": "^7.0.31",
+    "@types/nunjucks": "0.0.32",
     "@types/request": "0.0.44",
     "@types/request-promise-native": "^1.0.5",
     "@types/serve-static": "^1.7.31",

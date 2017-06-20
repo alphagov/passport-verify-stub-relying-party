@@ -53,6 +53,6 @@ describe('Stub RP Application', function () {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: 'SAMLResponse=some-saml-response'
     })
-    .then(body => assert.equal(body, 'Hello Billy Batson you are logged in'))
+    .then(body => assert(body.includes('You have successfully logged in as <em>Billy Batson</em>')))
   })
 })

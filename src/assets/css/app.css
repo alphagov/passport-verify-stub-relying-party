@@ -1,0 +1,67 @@
+#content {
+    padding-bottom: 30px;
+    outline: none
+}
+
+#content:after {
+    content: "";
+    display: block;
+    clear: both
+}
+
+#content {
+    max-width: 960px;
+    margin: 0 15px
+}
+
+@media (min-width: 641px) {
+    #content {
+        margin:0 30px
+    }
+}
+
+@media (min-width: 769px) {
+    #content {
+        padding-bottom:90px
+    }
+}
+
+@media (min-width: 1020px) {
+    #content {
+        margin:0 auto
+    }
+}
+
+.button {
+    background-color: #00823b;
+    position: relative;
+    display: -moz-inline-stack;
+    display: inline-block;
+    padding: .526315em .789473em .263157em;
+    border: none;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    outline: 1px solid transparent;
+    outline-offset: -1px;
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 2px 0 #003618;
+    -moz-box-shadow: 0 2px 0 #003618;
+    box-shadow: 0 2px 0 #003618;
+    font-size: 1em;
+    line-height: 1.25;
+    text-decoration: none;
+    -webkit-font-smoothing: antialiased;
+    cursor: pointer;
+    color: #fff;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    vertical-align: top;
+}
+.button:link, .button:link:focus, .button:hover, .button:focus, .button:visited {
+    color: #fff;
+}
+.button:visited {
+    background-color: #00823b;
+}

@@ -1,0 +1,18 @@
+{% extends "layouts/govuk_template.html" %}
+
+{% block head %}
+<link href="css/app.css" media="screen" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<main id=content>
+<h1>Stub Verify Relying Party</h1>
+<p>This is a small application that represents a "relying party" connected to GOV.UK Verify.</p>
+
+<p>This demonstrates the use of the verify-service-provider and the passport-verify library to connect a node JS service to Verify securely.</p>
+
+<p>To log in with the Stub Verify Hub click "Start"</p>
+
+<a class="button button-start" href="/verify/start">Start</a>
+</main>
+{% endblock %}
