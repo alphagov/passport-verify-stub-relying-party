@@ -41,7 +41,7 @@ describe('Stub RP Application', function () {
         assert(body.includes('<form'))
         assert(body.includes('some-saml'))
         assert(body.includes('http://example.com'))
-        assert(body.includes('samlRequest'))
+        assert(body.includes('SAMLRequest'))
         assert(body.includes('relayState'))
       })
   })

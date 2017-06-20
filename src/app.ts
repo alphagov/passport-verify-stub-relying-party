@@ -5,6 +5,7 @@ import { createStrategy } from 'passport-verify'
 import * as bodyParser from 'body-parser'
 
 const fakeUserDatabase: any = {
+  pid: { firstname: 'Default', surname: 'User' },
   billy: { firstname: 'Billy', surname: 'Batson' },
   clark: { firstname: 'Clark', surname: 'Kent' },
   bruce: { firstname: 'Bruce', surname: 'Banner' }
