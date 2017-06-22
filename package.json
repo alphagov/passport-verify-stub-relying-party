@@ -4,6 +4,7 @@
   "description": "A Stub implementation of a node js application that uses verify service provider prototype",
   "main": "src/index.js",
   "scripts": {
+    "preinstall": "node -e 'if(!/yarn\\.js$/.test(process.env.npm_execpath))throw \"NPM not supported, please use Yarn to install dependencies ($ yarn install).\\n\"'",
     "test": "tsc && ./node_modules/.bin/mocha ./build/test/* && npm run lint",
     "start": "tsc && node ./build/src/index.js",
     "lint": "./node_modules/.bin/tslint -c tslint.json -p ."
