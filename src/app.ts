@@ -31,11 +31,17 @@ export function createApp (options: any) {
 
   _passport.serializeUser = (user: any, req: any, done: any) => done(null, user)
   _passport.deserializeUser = (user: any, req: any, done: any) => {
+    if (!fakeUserDatabase[user.pid]) {
+      fakeUserDatabase[user.pid] = { firstname: user.firstname, surname: user.surname }
+    }
     const { firstname, surname } = fakeUserDatabase[user.pid]
     done(null, { levelOfAssurance: user.levelOfAssurance, firstname, surname })
   }
 
-  passport.use(createStrategy({ verifyServiceProviderHost: options.verifyServiceProviderHost }))
+  passport.use(createStrategy({
+    verifyServiceProviderHost: options.verifyServiceProviderHost,
+    logger: console
+  }))
 
   app.get('/', (req, res) => res.render('index.njk'))
   app.get('/verify/start', passport.authenticate('verify'))
