@@ -6,10 +6,10 @@ import * as bodyParser from 'body-parser'
 import * as nunjucks from 'nunjucks'
 
 const fakeUserDatabase: any = {
-  pid: { id: 'pid', firstName: 'Default', surName: 'User' },
-  billy: { id: 'billy', firstName: 'Billy', surName: 'Batson' },
-  clark: { id: 'clark', firstName: 'Clark', surName: 'Kent' },
-  bruce: { id: 'bruce', firstName: 'Bruce', surName: 'Banner' }
+  pid: { id: 'pid', firstName: 'Default', surname: 'User' },
+  billy: { id: 'billy', firstName: 'Billy', surname: 'Batson' },
+  clark: { id: 'clark', firstName: 'Clark', surname: 'Kent' },
+  bruce: { id: 'bruce', firstName: 'Bruce', surname: 'Banner' }
 }
 
 export function createApp (options: any) {
@@ -31,6 +31,7 @@ export function createApp (options: any) {
 
   // Define how the user-object is de/serialized into the session
   // so that it is available across requests
+  // this could a db for a session store instead of serializing the whole user-object into the session
   _passport.serializeUser((user: any, done: any) => done(null, JSON.stringify(user)))
   _passport.deserializeUser((user: any, done: any) => done(null, JSON.parse(user)))
 
@@ -42,11 +43,11 @@ export function createApp (options: any) {
 
     // A callback for finding or creating the user from the application's database
     acceptUser: (user) => {
-      if (!fakeUserDatabase[user.pid]) {
+      if (!fakeUserDatabase[user.pid] && user.attributes) {
         fakeUserDatabase[user.pid] = {
           id: user.pid,
-          firstName: user.attributes.filter(x => x.name === 'firstName')[0],
-          surName: user.attributes.filter(x => x.name === 'surName')[0]
+          firstName: user.attributes.firstName,
+          surname: user.attributes.surname
         }
       }
       return Object.assign({ levelOfAssurence: user.levelOfAssurance }, fakeUserDatabase[user.pid])
