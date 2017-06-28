@@ -1,4 +1,4 @@
-import * as assert from 'assert'
+import { assert } from 'chai'
 import * as request from 'request-promise-native'
 import { createApp } from '../src/app'
 import * as http from 'http'
@@ -38,11 +38,11 @@ describe('Stub RP Application', function () {
   it('should render a form that would authenticate with SAML', function () {
     return client('http://localhost:3201/verify/start')
       .then(body => {
-        assert(body.includes('<form'))
-        assert(body.includes('some-saml'))
-        assert(body.includes('http://example.com'))
-        assert(body.includes('SAMLRequest'))
-        assert(body.includes('relayState'))
+        assert.include(body, '<form')
+        assert.include(body, 'some-saml')
+        assert.include(body, 'http://example.com')
+        assert.include(body, 'SAMLRequest')
+        assert.include(body, 'relayState')
       })
   })
 
@@ -53,6 +53,9 @@ describe('Stub RP Application', function () {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: 'SAMLResponse=some-saml-response'
     })
-    .then(body => assert(body.includes('You have successfully logged in as <em>Billy Batson</em> at level of assurance LEVEL_1')))
+    .then(body => {
+      assert.include(body, 'You have successfully logged in as <em>Billy Batson</em>')
+      assert.include(body, 'level of assurance LEVEL_1')
+    })
   })
 })

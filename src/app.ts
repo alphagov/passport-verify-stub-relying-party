@@ -6,10 +6,10 @@ import * as bodyParser from 'body-parser'
 import * as nunjucks from 'nunjucks'
 
 const fakeUserDatabase: any = {
-  pid: { firstname: 'Default', surname: 'User' },
-  billy: { firstname: 'Billy', surname: 'Batson' },
-  clark: { firstname: 'Clark', surname: 'Kent' },
-  bruce: { firstname: 'Bruce', surname: 'Banner' }
+  pid: { id: 'pid', firstName: 'Default', surName: 'User' },
+  billy: { id: 'billy', firstName: 'Billy', surName: 'Batson' },
+  clark: { id: 'clark', firstName: 'Clark', surName: 'Kent' },
+  bruce: { id: 'bruce', firstName: 'Bruce', surName: 'Banner' }
 }
 
 export function createApp (options: any) {
@@ -29,18 +29,29 @@ export function createApp (options: any) {
   app.use(passport.initialize())
   app.use(passport.session())
 
-  _passport.serializeUser = (user: any, req: any, done: any) => done(null, user)
-  _passport.deserializeUser = (user: any, req: any, done: any) => {
-    if (!fakeUserDatabase[user.pid]) {
-      fakeUserDatabase[user.pid] = { firstname: user.firstname, surname: user.surname }
-    }
-    const { firstname, surname } = fakeUserDatabase[user.pid]
-    done(null, { levelOfAssurance: user.levelOfAssurance, firstname, surname })
-  }
+  // Define how the user-object is de/serialized into the session
+  // so that it is available across requests
+  _passport.serializeUser((user: any, done: any) => done(null, JSON.stringify(user)))
+  _passport.deserializeUser((user: any, done: any) => done(null, JSON.parse(user)))
 
   passport.use(createStrategy({
+
     verifyServiceProviderHost: options.verifyServiceProviderHost,
-    logger: console
+
+    logger: options.logger,
+
+    // A callback for finding or creating the user from the application's database
+    acceptUser: (user) => {
+      if (!fakeUserDatabase[user.pid]) {
+        fakeUserDatabase[user.pid] = {
+          id: user.pid,
+          firstName: user.attributes.filter(x => x.name === 'firstName')[0],
+          surName: user.attributes.filter(x => x.name === 'surName')[0]
+        }
+      }
+      return Object.assign({ levelOfAssurence: user.levelOfAssurance }, fakeUserDatabase[user.pid])
+    }
+
   }))
 
   app.get('/', (req, res) => res.render('index.njk'))
