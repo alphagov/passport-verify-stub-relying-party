@@ -6,8 +6,12 @@
   "scripts": {
     "preinstall": "node -e 'if(!/yarn\\.js$/.test(process.env.npm_execpath))throw \"NPM not supported, please use Yarn to install dependencies ($ yarn install).\\n\"'",
     "test": "tsc && ./node_modules/.bin/mocha ./build/test/* && npm run lint",
-    "start": "tsc && node ./build/src/index.js",
+    "build": "tsc",
+    "start": "node ./build/src/index.js",
     "lint": "./node_modules/.bin/tslint -c tslint.json -p ."
+  },
+  "engines": {
+    "node": "7.8.0"
   },
   "author": "Verify",
   "license": "MIT",
@@ -18,7 +22,7 @@
     "govuk_template_jinja": "^0.22.2",
     "nunjucks": "^3.0.1",
     "passport": "^0.3.2",
-    "passport-verify": "file:../passport-verify",
+    "passport-verify": "file:./passport-verify",
     "request": "^2.81.0",
     "request-promise-native": "^1.0.4"
   },

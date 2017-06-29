@@ -1,0 +1,5 @@
+applications:
+  - name: stub-rp-prototype
+    memory: 256M
+    env:
+      VERIFY_SERVICE_PROVIDER_HOST: https://verify-service-provider-prototype.cloudapps.digital
