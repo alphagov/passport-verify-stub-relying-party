@@ -58,15 +58,21 @@ export function createApp (options: any) {
   app.get('/', (req, res) => res.render('index.njk'))
   app.get('/verify/start', passport.authenticate('verify'))
   app.post('/verify/response', passport.authenticate('verify', {
-    successRedirect: '/service-landing-page'
+    successRedirect: '/service-landing-page',
+    failureRedirect: '/authentication-failed-page'
   }))
 
   const redirectIfNoSession = (req: express.Request, res: express.Response, next: express.NextFunction) => {
     if (!req.user) res.redirect('/')
     else next()
   }
+
   app.get('/service-landing-page', redirectIfNoSession, (req, res) => {
     res.render('service-landing-page.njk', { user: req.user })
+  })
+
+  app.get('/authentication-failed-page', (req, res) => {
+    res.render('authentication-failed-page.njk', {})
   })
 
   return app
