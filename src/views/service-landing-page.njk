@@ -8,6 +8,45 @@
 <main id=content>
 <h1>Success!</h1>
 <p>You have successfully logged in as <em>{{user.firstName}} {{user.surname}}</em> at level of assurance {{user.levelOfAssurence}}.</p>
+<p>
+<table>
+    <thead>
+        <tr>
+            <th>Attribute Name</th><th>Attribute Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for name, value in user %}
+            {% if name !== 'address' %}
+                <tr>
+                    <td><code>{{name}}</code></td>
+                    <td><code>{{value}}</code></td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </tbody>
+
+</table>
+</p>
+{% if user.address %}
+    <h2 class="heading-medium">Address Attributes</h2>
+    <p>
+        <table>
+            <thead> 
+                <th>Attribute Name</th><th>Attribute Value</th>
+            </thead>
+            {% for addressKey, addressValue in user.address %}
+        
+                <tbody>
+                    <tr>
+                        <td><code>{{addressKey}}</code></td>
+                        <td><code>{{addressValue}}</code></td>
+                    </tr>
+                </tbody>
+            {% endfor %}
+        </table>
+    </p>
+{% endif %}
 <p>This is only a stub service. In a real service you'd be able to interact with the government now.</p>
 </main>
 {% endblock %}

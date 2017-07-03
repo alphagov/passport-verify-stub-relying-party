@@ -4,13 +4,7 @@ import * as passport from 'passport'
 import { createStrategy } from 'passport-verify'
 import * as bodyParser from 'body-parser'
 import * as nunjucks from 'nunjucks'
-
-const fakeUserDatabase: any = {
-  pid: { id: 'pid', firstName: 'Default', surname: 'User' },
-  billy: { id: 'billy', firstName: 'Billy', surname: 'Batson' },
-  clark: { id: 'clark', firstName: 'Clark', surname: 'Kent' },
-  bruce: { id: 'bruce', firstName: 'Bruce', surname: 'Banner' }
-}
+import fakeUserDatabase from './fakeUserDatabase'
 
 export function createApp (options: any) {
   const _passport: any = passport
@@ -43,16 +37,14 @@ export function createApp (options: any) {
 
     // A callback for finding or creating the user from the application's database
     acceptUser: (user) => {
-      if (!fakeUserDatabase[user.pid] && user.attributes) {
-        fakeUserDatabase[user.pid] = {
-          id: user.pid,
-          firstName: user.attributes.firstName,
-          surname: user.attributes.surname
+      if (user.attributes) {
+        if (fakeUserDatabase[user.pid]) {
+          throw new Error('User PID already exists')
         }
+        fakeUserDatabase[user.pid] = Object.assign({id: user.pid}, user.attributes)
       }
       return Object.assign({ levelOfAssurence: user.levelOfAssurance }, fakeUserDatabase[user.pid])
     }
-
   }))
 
   app.get('/', (req, res) => res.render('index.njk'))
