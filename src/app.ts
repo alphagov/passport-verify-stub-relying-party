@@ -10,7 +10,14 @@ export function createApp (options: any) {
   const _passport: any = passport
   const app: express.Application = express()
 
-  nunjucks.configure(['./src/views', './node_modules/govuk_template_jinja/views'], { autoescape: true, express: app })
+  nunjucks.configure([
+    './src/views',
+    './node_modules/govuk_template_jinja/views'
+  ], {
+    autoescape: true,
+    express: app
+  }).addGlobal('asset_path', '/')
+
   app.use(express.static('./src/assets'))
   app.use(express.static('./node_modules/govuk_template_jinja/assets'))
 
@@ -50,13 +57,11 @@ export function createApp (options: any) {
   app.get('/', (req, res) => res.render('index.njk'))
   app.get('/verify/start', passport.authenticate('verify'))
   app.post('/verify/response', (req, res, next) => {
-    (passport.authenticate('verify', {successRedirect: '/service-landing-page'}, function (error: any, user: any, infoOrError: any, status: number) {
+    (passport.authenticate('verify', function (error: any, user: any, infoOrError: any, status: number) {
       if (user) {
-        req.logIn(user, () => {
-          return res.redirect('/service-landing-page')
-        })
+        req.logIn(user, () => res.redirect('/service-landing-page'))
       } else {
-        res.render('authentication-failed-page.njk', {error: infoOrError, asset_path: '/'})
+        res.render('authentication-failed-page.njk', { error: infoOrError })
       }
     }))(req, res, next)
   })
