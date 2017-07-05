@@ -97,7 +97,7 @@ describe('Stub RP Application', function () {
         body: 'SAMLResponse=some-saml-response'
       })
       .then(body => {
-        assert.include(body, 'Authentication failed!', body)
+        assert.include(body, 'An Error occurred', body)
         assert.include(body, 'Because INTERNAL_SERVER_ERROR', body)
       })
     })

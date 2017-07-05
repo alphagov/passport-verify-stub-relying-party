@@ -59,12 +59,17 @@ export function createApp (options: any) {
 
   app.post('/verify/response', (req, res, next) => {
     (passport.authenticate('verify', function (error: Error, user: any, infoOrError: any, status: number) {
-      if (user) {
-        req.logIn(user, () => res.redirect('/service-landing-page'))
-      } else {
-        const message = error ? error.message : infoOrError
-        res.render('authentication-failed-page.njk', { error: message })
+
+      if (error) {
+        return res.render('error-page.njk', { error: error.message })
       }
+
+      if (user) {
+        return req.logIn(user, () => res.redirect('/service-landing-page'))
+      }
+
+      return res.render('authentication-failed-page.njk', { error: infoOrError })
+
     }))(req, res, next)
   })
 

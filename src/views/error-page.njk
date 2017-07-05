@@ -1,0 +1,14 @@
+{% extends "layouts/govuk_template.html" %}
+
+{% block head %}
+<link href="/css/app.css" media="screen" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<main id=content>
+<h1>An Error occurred!</h1>
+<p>Because {{error}}</p>
+<p>Perhaps you would like to <a href='/'>try again</a></p>
+</main>
+{% endblock %}
+
