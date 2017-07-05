@@ -81,6 +81,27 @@ describe('Stub RP Application', function () {
         assert.include(body, 'Authentication failed!', body)
       })
     })
+
+    it('should show an error when receiving 500', function () {
+      mockVerifyServiceProvider.post('/translate-response', (req, res, next) => {
+        res.status(500)
+        res.header('content-type', 'application/json').send({
+          reason: 'INTERNAL_SERVER_ERROR',
+          message: 'anything'
+        })
+      })
+      return client({
+        uri: 'http://localhost:3201/verify/response',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'SAMLResponse=some-saml-response'
+      })
+      .then(body => {
+        assert.include(body, 'Authentication failed!', body)
+        assert.include(body, 'Because INTERNAL_SERVER_ERROR', body)
+      })
+    })
+
   })
 
   describe('when a new user logs in', () => {

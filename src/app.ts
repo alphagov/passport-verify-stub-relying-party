@@ -56,12 +56,14 @@ export function createApp (options: any) {
 
   app.get('/', (req, res) => res.render('index.njk'))
   app.get('/verify/start', passport.authenticate('verify'))
+
   app.post('/verify/response', (req, res, next) => {
-    (passport.authenticate('verify', function (error: any, user: any, infoOrError: any, status: number) {
+    (passport.authenticate('verify', function (error: Error, user: any, infoOrError: any, status: number) {
       if (user) {
         req.logIn(user, () => res.redirect('/service-landing-page'))
       } else {
-        res.render('authentication-failed-page.njk', { error: infoOrError })
+        const message = error ? error.message : infoOrError
+        res.render('authentication-failed-page.njk', { error: message })
       }
     }))(req, res, next)
   })
