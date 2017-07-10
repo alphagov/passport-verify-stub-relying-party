@@ -42,14 +42,36 @@ export function createApp (options: any) {
 
     logger: options.logger,
 
-    // A callback for finding or creating the user from the application's database
+    // A callback for finding or creating the user from the
+    // application's database.
+    // This function is called at the end of the authentication flow and
+    // it should either return a user object or false if the user is not
+    // accepted by the application for whatever reason. It can also return a
+    // Promise in case it is asynchronous.
     acceptUser: (user) => {
+
+      // A new user will be given with an attributes object that
+      // describe the user details. Users that are already known by
+      // the application will not have an attributes-field.
+      // Whether a user is new or not will be defined by the local matching
+      // strategy of the application. See Verify Integration guides for further
+      // details on local matching.
       if (user.attributes) {
+
         if (fakeUserDatabase[user.pid]) {
+          // This should be an error case if the local matching strategy is
+          // done correctly.
           throw new Error('User PID already exists')
         }
         fakeUserDatabase[user.pid] = Object.assign({id: user.pid}, user.attributes)
       }
+
+      if (!fakeUserDatabase[user.pid]) {
+        // This should be an error case if the local matching strategy is
+        // done correctly.
+        throw new Error('Local matching stragey has defined that the user exists, but the PID could not be found in the database.')
+      }
+
       return Object.assign({ levelOfAssurence: user.levelOfAssurance }, fakeUserDatabase[user.pid])
     }
   }))
