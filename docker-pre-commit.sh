@@ -15,4 +15,3 @@ trap cleanup EXIT
 
 docker exec "$container_id" "/usr/src/app/pre-commit.sh"
 docker cp "$container_id:/usr/src/app/build" build
-docker cp "$container_id:usr/src/app/passport-verify/build" passport-verify/build

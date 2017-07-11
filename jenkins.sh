@@ -6,8 +6,5 @@ function cleanup {
 }
 trap cleanup EXIT
 cd "$(dirname "$0")"
-cd passport-verify
-yarn
-cd ..
 yarn
 ./pre-commit.sh
