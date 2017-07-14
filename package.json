@@ -11,7 +11,7 @@
     "lint": "./node_modules/.bin/tslint -c tslint.json -p ."
   },
   "engines": {
-    "node": "6.10.2"
+    "node": "6.11.1"
   },
   "author": "Verify",
   "license": "MIT",
