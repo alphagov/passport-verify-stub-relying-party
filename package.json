@@ -1,5 +1,5 @@
 {
-  "name": "stub-rp",
+  "name": "passport-verify-stub-relying-party",
   "version": "1.0.0",
   "description": "A Stub implementation of a node js application that uses verify service provider prototype",
   "main": "src/index.js",

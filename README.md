@@ -1,10 +1,10 @@
-verify-stub-rp-node
-===================
+Passport-verify-stub-relying-party
+==================================
 
 Usage
 -----
 
-verify-stub-rp-node uses `yarn` to manage dependencies. See https://yarnpkg.com/en/
+passport-verify-stub-relying-party uses `yarn` to manage dependencies. See https://yarnpkg.com/en/
 
 Install the dependencies with:
 
