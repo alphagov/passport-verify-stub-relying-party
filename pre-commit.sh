@@ -6,4 +6,4 @@ function cleanup {
 }
 trap cleanup EXIT
 cd "$(dirname "$0")"
-yarn test
+npm test
