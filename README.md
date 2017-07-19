@@ -1,6 +1,8 @@
 Passport-verify-stub-relying-party
 ==================================
 
+[![Build Status](https://travis-ci.org/alphagov/passport-verify-stub-relying-party.svg?branch=master)](https://travis-ci.org/alphagov/passport-verify-stub-relying-party)
+
 Usage
 -----
 
