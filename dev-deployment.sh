@@ -31,7 +31,7 @@ cfLogin() {
   fi
 }
 
-./pre-commit.sh
+./docker-pre-commit.sh
 
 cfLogin
 
