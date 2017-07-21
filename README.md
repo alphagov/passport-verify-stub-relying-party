@@ -25,3 +25,11 @@ Start the application with:
 ```
 ./startup.sh
 ```
+
+Run acceptance-tests with:
+
+```
+VERIFY_SERVICE_PROVIDER_HOST=http://localhost:50400 \
+  COMPLIANCE_TOOL_URL=https://compliance-tool-reference.ida.digital.cabinet-office.gov.uk/SAML2/SSO \
+  npm run acceptance-tests
+```
