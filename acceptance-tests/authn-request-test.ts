@@ -1,7 +1,7 @@
 const Browser = require('zombie')
 import { Server } from 'http'
 import { createApp } from './../src/app'
-import { request } from 'https'
+import * as request from 'request-promise-native'
 import { assert } from 'chai'
 import { parse as parseUrl } from 'url'
 
@@ -9,7 +9,7 @@ describe('Clicking "Start"', function () {
 
   const browser = new Browser()
   const VERIFY_SERVICE_PROVIDER_HOST = process.env['VERIFY_SERVICE_PROVIDER_HOST'] || 'http://localhost:50400'
-  const COMPLIANCE_TOOL_URL = process.env['COMPLIANCE_TOOL_URL'] || 'https://compliance-tool-reference.ida.digital.cabinet-office.gov.uk/SAML2/SSO'
+  const COMPLIANCE_TOOL_HOST = process.env['COMPLIANCE_TOOL_HOST'] || 'http://localhost:50270'
   let server: Server
 
   beforeEach(done => {
@@ -20,7 +20,7 @@ describe('Clicking "Start"', function () {
     server.close(done)
   })
 
-  before(done => {
+  before(() => {
     const postData = {
       serviceEntityId: 'http://passport-verify-stub-relying-party',
       assertionConsumerServiceUrl: 'http://passport-verify-stub-relying-party/verify/response',
@@ -33,26 +33,19 @@ describe('Clicking "Start"', function () {
       userAccountCreationAttributes: []
     }
 
-    const req = request({
-      hostname: parseUrl(COMPLIANCE_TOOL_URL).hostname,
-      path: '/service-test-data',
+    return request({
+      uri: `${COMPLIANCE_TOOL_HOST}/service-test-data`,
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }, res => {
-      assert.equal(res.statusCode, 200)
-      done()
+      json: true,
+      body: postData
     })
-
-    req.end(JSON.stringify(postData))
   })
 
   it('Should send an AuthnRequest to the compliance tool', async () => {
     await browser.visit(`http://localhost:${server.address().port}`)
     await browser.clickLink('Start')
     browser.assert.status(200)
-    browser.assert.url(COMPLIANCE_TOOL_URL)
+    browser.assert.url(`${COMPLIANCE_TOOL_HOST}/SAML2/SSO`)
   })
 
 })
