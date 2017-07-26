@@ -41,7 +41,7 @@ describe('Clicking "Start"', function () {
     })
   })
 
-  it('Should send an AuthnRequest to the compliance tool', async () => {
+  it.skip('Should send an AuthnRequest to the compliance tool', async () => {
     await browser.visit(`http://localhost:${server.address().port}`)
     await browser.clickLink('Start')
     browser.assert.status(200)
