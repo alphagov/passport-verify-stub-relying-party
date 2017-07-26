@@ -13,9 +13,5 @@ then
   echo "warning: remember to run stub-verify-hub as well"
 fi
 
-if [ ! ${COMPLIANCE_TOOL_HOST} ]
-  then echo "warning: COMPLIANCE_TOOL_HOST not set, using localhost:50270 by default"
-fi
-
 npm test
 npm run acceptance-tests

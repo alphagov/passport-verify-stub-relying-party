@@ -13,5 +13,5 @@ function cleanup {
 }
 trap cleanup EXIT
 
-docker exec -e "COMPLIANCE_TOOL_HOST=$COMPLIANCE_TOOL_HOST" -e "VERIFY_SERVICE_PROVIDER_HOST=$VERIFY_SERVICE_PROVIDER_HOST" "$container_id" "/usr/src/app/pre-commit.sh"
+docker exec -e "VERIFY_SERVICE_PROVIDER_HOST=$VERIFY_SERVICE_PROVIDER_HOST" "$container_id" "/usr/src/app/pre-commit.sh"
 docker cp "$container_id:/usr/src/app/build" build

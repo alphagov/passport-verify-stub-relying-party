@@ -9,7 +9,7 @@ describe('Clicking "Start"', function () {
 
   const browser = new Browser()
   const VERIFY_SERVICE_PROVIDER_HOST = process.env['VERIFY_SERVICE_PROVIDER_HOST'] || 'http://localhost:50400'
-  const COMPLIANCE_TOOL_HOST = process.env['COMPLIANCE_TOOL_HOST'] || 'http://localhost:50270'
+  const COMPLIANCE_TOOL_HOST = 'https://compliance-tool-reference.ida.digital.cabinet-office.gov.uk'
   let server: Server
 
   beforeEach(done => {
