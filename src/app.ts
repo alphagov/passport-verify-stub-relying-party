@@ -36,11 +36,11 @@ export function createApp (options: any) {
   _passport.serializeUser((user: any, done: any) => done(null, JSON.stringify(user)))
   _passport.deserializeUser((user: any, done: any) => done(null, JSON.parse(user)))
 
-  passport.use(createStrategy({
+  passport.use(createStrategy(
 
-    verifyServiceProviderHost: options.verifyServiceProviderHost,
+    options.verifyServiceProviderHost,
 
-    logger: options.logger,
+    options.logger,
 
     // A callback for a new user authentication.
     // This function is called at the end of the authentication flow
@@ -48,20 +48,7 @@ export function createApp (options: any) {
     // it should either return a user object or false if the user is not
     // accepted by the application for whatever reason. It can also return a
     // Promise in case it is asynchronous.
-    createUser: (user) => {
-
-      // This should be an error case if the local matching strategy is
-      // done correctly.
-      if (fakeUserDatabase[user.pid]) {
-        throw new Error(
-          'Local matching strategy has defined ' +
-          'the user to be new to the application, ' +
-          'but the User PID already exists.')
-      }
-
-      fakeUserDatabase[user.pid] = Object.assign({id: user.pid}, user.attributes)
-      return Object.assign({ levelOfAssurence: user.levelOfAssurance }, fakeUserDatabase[user.pid])
-    },
+    createUser,
 
     // A callback for an existing user authentication.
     // This function is called at the end of the authentication flow with
@@ -69,20 +56,8 @@ export function createApp (options: any) {
     // The function should either return a user object or false if the user is not
     // accepted by the application for whatever reason. It can also return a
     // Promise in case it is asynchronous.
-    verifyUser: (user) => {
-
-      // This should be an error case if the local matching strategy is
-      // done correctly.
-      if (!fakeUserDatabase[user.pid]) {
-        throw new Error(
-          'Local matching strategy has defined ' +
-          'that the user exists, but the PID could ' +
-          'not be found in the database.')
-      }
-
-      return Object.assign({ levelOfAssurence: user.levelOfAssurance }, fakeUserDatabase[user.pid])
-    }
-  }))
+    verifyUser
+  ))
 
   app.get('/', (req, res) => res.render('index.njk'))
   app.get('/verify/start', passport.authenticate('verify'))
@@ -115,6 +90,33 @@ export function createApp (options: any) {
   app.get('/authentication-failed-page', (req, res) => {
     res.render('authentication-failed-page.njk', {})
   })
+
+  function createUser (user: any) {
+    // This should be an error case if the local matching strategy is
+    // done correctly.
+    if (fakeUserDatabase[user.pid]) {
+      throw new Error(
+        'Local matching strategy has defined ' +
+        'the user to be new to the application, ' +
+        'but the User PID already exists.')
+    }
+
+    fakeUserDatabase[user.pid] = Object.assign({id: user.pid}, user.attributes)
+    return Object.assign({ levelOfAssurence: user.levelOfAssurance }, fakeUserDatabase[user.pid])
+  }
+
+  function verifyUser (user: any) {
+    // This should be an error case if the local matching strategy is
+    // done correctly.
+    if (!fakeUserDatabase[user.pid]) {
+      throw new Error(
+        'Local matching strategy has defined ' +
+        'that the user exists, but the PID could ' +
+        'not be found in the database.')
+    }
+
+    return Object.assign({ levelOfAssurence: user.levelOfAssurance }, fakeUserDatabase[user.pid])
+  }
 
   return app
 }
