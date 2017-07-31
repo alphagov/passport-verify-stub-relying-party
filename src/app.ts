@@ -56,15 +56,25 @@ export function createApp (options: any) {
     // The function should either return a user object or false if the user is not
     // accepted by the application for whatever reason. It can also return a
     // Promise in case it is asynchronous.
-    verifyUser
+    verifyUser,
+
+    // A callback that saves the unique request ID associated with the SAML messages
+    // to the user's session.
+    // This function is called after the Verify Service Provider has generated and
+    // returned the AuthnRequest and associated RequestID.
+    // The requestID should be saved in a secure manner, and such that it
+    // corresponds to the user's current session and can be retrieved in order to validate
+    // that SAML response that is returned from the IDP corresponds to the original AuthnRequest.
+    setRequestId,
+
+    getRequestId
   ))
 
   app.get('/', (req, res) => res.render('index.njk'))
   app.get('/verify/start', passport.authenticate('verify'))
 
   app.post('/verify/response', (req, res, next) => {
-    (passport.authenticate('verify', function (error: Error, user: any, infoOrError: any, status: number) {
-
+    const authMiddleware = passport.authenticate('verify', function (error: Error, user: any, infoOrError: any, status: number) {
       if (error) {
         return res.render('error-page.njk', { error: error.message })
       }
@@ -75,7 +85,8 @@ export function createApp (options: any) {
 
       return res.render('authentication-failed-page.njk', { error: infoOrError })
 
-    }))(req, res, next)
+    })
+    authMiddleware(req as any, res as any, next)
   })
 
   const redirectIfNoSession = (req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -116,6 +127,16 @@ export function createApp (options: any) {
     }
 
     return Object.assign({ levelOfAssurence: user.levelOfAssurance }, fakeUserDatabase[user.pid])
+  }
+
+  function setRequestId (requestId: string, request: any) {
+    // The request Id currently is a UUID (e.g. 0f44aa97-fde9-49d1-b884-b7a449e46e7b)
+    // Logic below is to store the request Id in a secure session
+    request.session.requestId = requestId
+  }
+
+  function getRequestId (request: any) {
+    return request.session.requestId
   }
 
   return app

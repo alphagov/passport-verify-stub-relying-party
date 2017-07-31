@@ -31,3 +31,11 @@ Run acceptance-tests with:
 ```
 npm run acceptance-tests
 ```
+
+In order to run the service using a locally linked copy of 'passport-verify' typescript has a bug that duplicates 
+dependencies, to get around this, the following dependencies need to be removed.
+
+```
+rm -r node_modules/@types/passport-strategy/
+rm -r node_modules/@types/passport/
+```

@@ -5,7 +5,7 @@ import * as request from 'request-promise-native'
 import { assert } from 'chai'
 import { parse as parseUrl } from 'url'
 
-describe('Clicking "Start"', function () {
+describe.skip('Clicking "Start"', function () {
 
   const browser = new Browser()
   const VERIFY_SERVICE_PROVIDER_HOST = process.env['VERIFY_SERVICE_PROVIDER_HOST'] || 'http://localhost:50400'

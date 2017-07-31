@@ -3,6 +3,7 @@ import * as request from 'request-promise-native'
 import { createApp } from '../src/app'
 import * as http from 'http'
 import * as express from 'express'
+import * as bodyParser from 'body-parser'
 
 describe('Stub RP Application', function () {
   let server: http.Server
@@ -13,7 +14,7 @@ describe('Stub RP Application', function () {
   describe('when an existing user logs in', () => {
 
     beforeEach((done) => {
-      server = createApp({ verifyServiceProviderHost: 'http://localhost:3202' }).listen(3201, () => {
+      server = createApp({ verifyServiceProviderHost: 'http://localhost:3202'}).listen(3201, () => {
         mockVerifyServiceProvider = express()
         verifyServiceProviderServer = mockVerifyServiceProvider.listen(3202, done)
       })
@@ -29,7 +30,7 @@ describe('Stub RP Application', function () {
       mockVerifyServiceProvider.post('/generate-request', (req, res, next) => {
         res.header('content-type', 'application/json').send({
           samlRequest: 'some-saml',
-          secureToken: 'some-secure-token',
+          requestId: 'some-request-id',
           location: 'http://example.com'
         })
       })
@@ -101,19 +102,21 @@ describe('Stub RP Application', function () {
         assert.include(body, 'Because INTERNAL_SERVER_ERROR', body)
       })
     })
-
   })
 
   describe('when a new user logs in', () => {
+    const requestId = '0f44aa97-fde9-49d1-b884-b7a449e46e7b'
     const mockVerifyServiceProvider = express()
+    mockVerifyServiceProvider.use(bodyParser.json())
     mockVerifyServiceProvider.post('/generate-request', (req, res, next) => {
       res.send({
         samlRequest: 'some-saml',
-        secureToken: 'some-secure-token',
+        requestId: requestId,
         location: 'http://example.com'
       })
     })
     mockVerifyServiceProvider.post('/translate-response', (req, res, next) => {
+      assert.equal(req.body.requestId, requestId)
       res.send({
         pid: 'some-new-user',
         levelOfAssurance: 'LEVEL_2',
@@ -125,23 +128,26 @@ describe('Stub RP Application', function () {
       })
     })
 
-    beforeEach(() => {
-      server = createApp({ verifyServiceProviderHost: 'http://localhost:3202' }).listen(3201)
-      verifyServiceProviderServer = mockVerifyServiceProvider.listen(3202)
+    beforeEach((done) => {
+      server = createApp({ verifyServiceProviderHost: 'http://localhost:3202' }).listen(3201, () => {
+        verifyServiceProviderServer = mockVerifyServiceProvider.listen(3202, done)
+      })
     })
 
-    afterEach(() => {
-      server.close()
-      verifyServiceProviderServer.close()
+    afterEach((done) => {
+      server.close(() => {
+        verifyServiceProviderServer.close(done)
+      })
     })
 
     it('should show the service page with the user\'s attributes when the user is created', function () {
-      return client({
+      return client('http://localhost:3201/verify/start')
+      .then(() => client({
         uri: 'http://localhost:3201/verify/response',
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: 'SAMLResponse=some-saml-response'
-      })
+      }))
       .then(body => {
         assert.include(body, 'You have successfully logged in as <em>Johnny Lately</em>')
         assert.include(body, 'level of assurance LEVEL_2')
