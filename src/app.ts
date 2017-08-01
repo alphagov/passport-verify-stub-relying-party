@@ -61,13 +61,14 @@ export function createApp (options: any) {
     // A callback that saves the unique request ID associated with the SAML messages
     // to the user's session.
     // This function is called after the Verify Service Provider has generated and
-    // returned the AuthnRequest and associated RequestID.
+    // returned the AuthnRequest and associated requestID.
     // The requestID should be saved in a secure manner, and such that it
     // corresponds to the user's current session and can be retrieved in order to validate
     // that SAML response that is returned from the IDP corresponds to the original AuthnRequest.
-    setRequestId,
+    saveRequestId,
 
-    getRequestId
+    // A corresponding callback that loads the requestID
+    loadRequestId
   ))
 
   app.get('/', (req, res) => res.render('index.njk'))
@@ -129,13 +130,13 @@ export function createApp (options: any) {
     return Object.assign({ levelOfAssurence: user.levelOfAssurance }, fakeUserDatabase[user.pid])
   }
 
-  function setRequestId (requestId: string, request: any) {
+  function saveRequestId (requestId: string, request: any) {
     // The request Id currently is a UUID (e.g. 0f44aa97-fde9-49d1-b884-b7a449e46e7b)
     // Logic below is to store the request Id in a secure session
     request.session.requestId = requestId
   }
 
-  function getRequestId (request: any) {
+  function loadRequestId (request: any) {
     return request.session.requestId
   }
 
