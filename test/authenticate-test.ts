@@ -31,7 +31,7 @@ describe('Stub RP Application', function () {
         res.header('content-type', 'application/json').send({
           samlRequest: 'some-saml',
           requestId: 'some-request-id',
-          location: 'http://example.com'
+          ssoLocation: 'http://example.com'
         })
       })
       return client('http://localhost:3201/verify/start')
