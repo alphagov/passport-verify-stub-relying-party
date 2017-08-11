@@ -5,22 +5,23 @@
 {% endblock %}
 
 {% block content %}
-<main id=content>
+<main id="content">
 <h1>Success!</h1>
-<p>You have successfully logged in as <em>{{user.firstName}} {{user.surname}}</em> at level of assurance {{user.levelOfAssurence}}.</p>
+<p>You have successfully logged in as <em>{{user.attributes.firstName.value}} {{user.attributes.surname.value}}</em> at level of assurance {{user.levelOfAssurance}}.</p>
 <p>
 <table>
     <thead>
         <tr>
-            <th>Attribute Name</th><th>Attribute Value</th>
+            <th>Attribute Name</th><th>Attribute Value</th><th>Attribute Verified</th>
         </tr>
     </thead>
     <tbody>
-        {% for name, value in user %}
+        {% for name, attribute in user.attributes %}
             {% if name !== 'address' %}
                 <tr>
                     <td><code>{{name}}</code></td>
-                    <td><code>{{value}}</code></td>
+                    <td><code>{{attribute.value}}</code></td>
+                    <td><code>{{attribute.verified}}</code></td>
                 </tr>
             {% endif %}
         {% endfor %}
@@ -28,14 +29,14 @@
 
 </table>
 </p>
-{% if user.address %}
-    <h2 class="heading-medium">Address Attributes</h2>
+{% if user.attributes.address %}
+    <h2 class="heading-medium">Address Attributes - {{ "" if user.attributes.address.verifed else "not " }}verified</h2>
     <p>
         <table>
             <thead> 
                 <th>Attribute Name</th><th>Attribute Value</th>
             </thead>
-            {% for addressKey, addressValue in user.address %}
+            {% for addressKey, addressValue in user.attributes.address.value %}
         
                 <tbody>
                     <tr>
