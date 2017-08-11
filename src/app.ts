@@ -113,8 +113,8 @@ export function createApp (options: any) {
         'but the User PID already exists.')
     }
 
-    fakeUserDatabase[user.pid] = Object.assign({id: user.pid}, user.attributes)
-    return Object.assign({ levelOfAssurence: user.levelOfAssurance }, fakeUserDatabase[user.pid])
+    fakeUserDatabase[user.pid] = user
+    return Object.assign({ levelOfAssurance: user.levelOfAssurance }, fakeUserDatabase[user.pid])
   }
 
   function verifyUser (user: any) {
@@ -127,7 +127,7 @@ export function createApp (options: any) {
         'not be found in the database.')
     }
 
-    return Object.assign({ levelOfAssurence: user.levelOfAssurance }, fakeUserDatabase[user.pid])
+    return Object.assign({ levelOfAssurance: user.levelOfAssurance }, fakeUserDatabase[user.pid])
   }
 
   function saveRequestId (requestId: string, request: any) {

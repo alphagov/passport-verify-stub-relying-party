@@ -1350,9 +1350,9 @@ passport-strategy@1.x.x, passport-strategy@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/passport-strategy/-/passport-strategy-1.0.0.tgz#b5539aa8fc225a3d1ad179476ddf236b440f52e4"
 
-passport-verify@0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/passport-verify/-/passport-verify-0.2.0.tgz#da7e913aa439c667da93226d63dd497eab118158"
+passport-verify@0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/passport-verify/-/passport-verify-0.3.1.tgz#2b282d35f3949be5f2ca6513910feb304e30c719"
   dependencies:
     "@types/express-serve-static-core" "^4.0.48"
     "@types/mocha" "^2.2.41"

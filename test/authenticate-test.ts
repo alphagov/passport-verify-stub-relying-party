@@ -112,7 +112,7 @@ describe('Stub RP Application', function () {
       res.send({
         samlRequest: 'some-saml',
         requestId: requestId,
-        location: 'http://example.com'
+        ssoLocation: 'http://example.com'
       })
     })
     mockVerifyServiceProvider.post('/translate-response', (req, res, next) => {
@@ -121,9 +121,18 @@ describe('Stub RP Application', function () {
         pid: 'some-new-user',
         levelOfAssurance: 'LEVEL_2',
         attributes: {
-          firstName: 'Johnny',
-          middleName: 'Come',
-          surname: 'Lately'
+          firstName: {
+            value: 'Johnny',
+            verified: false
+          },
+          middleName: {
+            value: 'Come',
+            verified: false
+          },
+          surname: {
+            value: 'Lately',
+            verified: false
+          }
         }
       })
     })
