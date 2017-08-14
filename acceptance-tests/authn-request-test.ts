@@ -5,6 +5,18 @@ import * as request from 'request-promise-native'
 import { assert } from 'chai'
 import { parse as parseUrl } from 'url'
 
+const TestCaseId = {
+  BASIC_SUCCESSFUL_MATCH_WITH_LOA2: 1,
+  BASIC_NO_MATCH: 2,
+  NO_AUTHENTICATION_CONTEXT: 3,
+  AUTHENTICATION_FAILED: 4,
+  REQUESTER_ERROR: 5,
+  ACCOUNT_CREATION_LOA2: 6,
+  BASIC_SUCCESSFUL_MATCH_WITH_LOA1: 7,
+  ACCOUNT_CREATION_LOA1: 8,
+  BASIC_SUCCESSFUL_MATCH_WITH_ASSERTIONS_SIGNED_BY_HUB: 9
+}
+
 describe('When running against compliance tool', function () {
   this.timeout(5000)
 
@@ -43,7 +55,6 @@ describe('When running against compliance tool', function () {
   })
 
   describe('On receiving a basic success response', () => {
-    const BASIC_SUCCESS_CASE_INDEX = 0
     let testCaseUri: string
 
     before(() => {
@@ -52,7 +63,7 @@ describe('When running against compliance tool', function () {
 
     beforeEach(() => {
       return makeAuthnRequest()
-        .then(() => getTestCaseUri(BASIC_SUCCESS_CASE_INDEX))
+        .then(() => getTestCaseUri(TestCaseId.BASIC_SUCCESSFUL_MATCH_WITH_LOA2))
         .then(uri => testCaseUri = uri)
     })
 
@@ -65,7 +76,6 @@ describe('When running against compliance tool', function () {
   })
 
   describe('On receiving a user account creation response', () => {
-    const ACCOUNT_CREATION_CASE_INDEX = 5
     let testCaseUri: string
 
     beforeEach(() => {
@@ -74,7 +84,7 @@ describe('When running against compliance tool', function () {
 
     beforeEach(() => {
       return makeAuthnRequest()
-        .then(() => getTestCaseUri(ACCOUNT_CREATION_CASE_INDEX))
+        .then(() => getTestCaseUri(TestCaseId.ACCOUNT_CREATION_LOA2))
         .then(uri => testCaseUri = uri)
     })
 
@@ -88,6 +98,27 @@ describe('When running against compliance tool', function () {
       browser.assert.text('td', /lines/)
       browser.assert.text('td', /33 Example Street/)
       browser.assert.text('h2', /Address Attributes - not verified/)
+    })
+  })
+
+  describe('On receiving an incorrectly signed response', () => {
+    let testCaseUri: string
+
+    before(() => {
+      setupComplianceTool('pid')
+    })
+
+    beforeEach(() => {
+      return makeAuthnRequest()
+        .then(() => getTestCaseUri(TestCaseId.BASIC_SUCCESSFUL_MATCH_WITH_ASSERTIONS_SIGNED_BY_HUB))
+        .then(uri => testCaseUri = uri)
+    })
+
+    it('serves an appropriate error', async () => {
+      await browser.visit(testCaseUri)
+
+      browser.assert.text('h1', 'Something went wrong')
+      browser.assert.text('p', /There was an error while trying to verify your identity\./)
     })
   })
 
@@ -133,11 +164,11 @@ describe('When running against compliance tool', function () {
     return Promise.resolve()
   }
 
-  async function getTestCaseUri (testCaseIndex: number): Promise<string> {
+  async function getTestCaseUri (testCaseId: number): Promise<string> {
     const authnResponseJson = JSON.parse(browser.window.document.body.textContent)
     await browser.visit(authnResponseJson.responseGeneratorLocation)
 
     const responseGeneratorResponseJson = JSON.parse(browser.window.document.body.textContent)
-    return responseGeneratorResponseJson.testCases[testCaseIndex].executeUri
+    return responseGeneratorResponseJson.testCases.find((testCase: any) => testCase.id === testCaseId).executeUri
   }
 })
