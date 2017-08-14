@@ -7,9 +7,12 @@
     "preinstall": "node -e 'if(!/yarn\\.js$/.test(process.env.npm_execpath))throw \"NPM not supported, please use Yarn to install dependencies ($ yarn install).\\n\"'",
     "test": "tsc && ./node_modules/.bin/mocha ./build/test/* && npm run lint",
     "acceptance-tests": "tsc && ./node_modules/.bin/mocha ./build/acceptance-tests/* && npm run lint",
+    "acceptance-tests-paas": "VERIFY_SERVICE_PROVIDER_HOST=https://verify-service-provider-dev.cloudapps.digital npm run acceptance-tests",
     "build": "tsc",
     "start": "node ./build/src/index.js",
-    "lint": "./node_modules/.bin/tslint -c tslint.json -p ."
+    "lint": "./node_modules/.bin/tslint -c tslint.json -p .",
+    "pre-commit-paas": "VERIFY_SERVICE_PROVIDER_HOST=https://verify-service-provider-dev.cloudapps.digital ./pre-commit.sh",
+    "startup-paas": "VERIFY_SERVICE_PROVIDER_HOST=https://verify-service-provider-dev.cloudapps.digital ./startup.sh"
   },
   "engines": {
     "node": "6.11.1"
