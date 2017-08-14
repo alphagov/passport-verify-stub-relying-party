@@ -4,6 +4,7 @@ import { createApp } from '../src/app'
 import * as http from 'http'
 import * as express from 'express'
 import * as bodyParser from 'body-parser'
+import { Scenario } from 'passport-verify'
 
 describe('Stub RP Application', function () {
   let server: http.Server
@@ -48,7 +49,7 @@ describe('Stub RP Application', function () {
       mockVerifyServiceProvider.post('/translate-response', (req, res, next) => {
         res.header('content-type', 'application/json').send({
           pid: 'billy',
-          scenario: 'SUCCESS_MATCH',
+          scenario: Scenario.SUCCESS_MATCH,
           levelOfAssurance: 'LEVEL_1',
           attributes: null
         })
@@ -117,6 +118,7 @@ describe('Stub RP Application', function () {
     mockVerifyServiceProvider.post('/translate-response', (req, res, next) => {
       assert.equal(req.body.requestId, requestId)
       res.send({
+        scenario: Scenario.ACCOUNT_CREATION,
         pid: 'some-new-user',
         levelOfAssurance: 'LEVEL_2',
         attributes: {
@@ -159,6 +161,54 @@ describe('Stub RP Application', function () {
       .then(body => {
         assert.include(body, 'You have successfully logged in as <em>Johnny Lately</em>')
         assert.include(body, 'level of assurance LEVEL_2')
+      })
+    })
+  })
+
+  describe(`when a user can't be matched`, () => {
+    const requestId = '0f44aa97-fde9-49d1-b884-b7a449e46e7b'
+    const mockVerifyServiceProvider = express()
+    mockVerifyServiceProvider.use(bodyParser.json())
+    mockVerifyServiceProvider.post('/generate-request', (req, res, next) => {
+      res.send({
+        samlRequest: 'some-saml',
+        requestId: requestId,
+        ssoLocation: 'http://example.com'
+      })
+    })
+    mockVerifyServiceProvider.post('/translate-response', (req, res, next) => {
+      assert.equal(req.body.requestId, requestId)
+      res.send({
+        scenario: Scenario.NO_MATCH,
+        pid: '',
+        levelOfAssurance: '',
+        attributes: {}
+      })
+    })
+
+    beforeEach((done) => {
+      server = createApp({ verifyServiceProviderHost: 'http://localhost:3202' }).listen(3201, () => {
+        verifyServiceProviderServer = mockVerifyServiceProvider.listen(3202, done)
+      })
+    })
+
+    afterEach((done) => {
+      server.close(() => {
+        verifyServiceProviderServer.close(done)
+      })
+    })
+
+    it('should show the error page', function () {
+      return client('http://localhost:3201/verify/start')
+      .then(() => client({
+        uri: 'http://localhost:3201/verify/response',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'SAMLResponse=some-saml-response'
+      }))
+      .then(body => {
+        assert.include(body, 'Authentication failed!', body)
+        assert.include(body, 'no user matching your credentials could be found', body)
       })
     })
   })

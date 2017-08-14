@@ -1,8 +1,10 @@
-import { TranslatedResponseBody } from 'passport-verify'
+interface User {
+  pid: string,
+  attributes: object
+}
 
-const defaultUser: TranslatedResponseBody = {
+const defaultUser: User = {
   pid: 'pid',
-  levelOfAssurance: 'LEVEL_2',
   attributes: {
     firstName: {
       value: 'Default',
@@ -33,9 +35,8 @@ const defaultUser: TranslatedResponseBody = {
   }
 }
 
-const billy: TranslatedResponseBody = {
+const billy: User = {
   pid: 'billy',
-  levelOfAssurance: 'LEVEL_1',
   attributes: {
     firstName: {
       value: 'Billy',
@@ -66,9 +67,8 @@ const billy: TranslatedResponseBody = {
   }
 }
 
-const clark: TranslatedResponseBody = {
+const clark: User = {
   pid: 'clark',
-  levelOfAssurance: 'LEVEL_2',
   attributes: {
     firstName: {
       value: 'Clark',
@@ -99,9 +99,8 @@ const clark: TranslatedResponseBody = {
   }
 }
 
-const bruce: TranslatedResponseBody = {
+const bruce: User = {
   pid: 'bruce',
-  levelOfAssurance: 'LEVEL_2',
   attributes: {
     firstName: {
       value: 'Bruce',
