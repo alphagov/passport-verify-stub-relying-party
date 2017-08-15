@@ -1,7 +1,7 @@
 import * as express from 'express'
 import * as session from 'express-session'
 import * as passport from 'passport'
-import { createStrategy, createResponseHandler, AuthnFailureReason, TranslatedResponseBody } from 'passport-verify'
+import { createStrategy, createResponseHandler, TranslatedResponseBody } from 'passport-verify'
 import * as bodyParser from 'body-parser'
 import * as nunjucks from 'nunjucks'
 import fakeUserDatabase from './fakeUserDatabase'
@@ -82,8 +82,14 @@ export function createApp (options: any) {
       onCreateUser: (user) => {
         return req.logIn(user, () => res.redirect('/service-landing-page'))
       },
-      onAuthnFailed: (authnFailureReason) => {
-        return res.render('authentication-failed-page.njk', { error: formatAuthnFailure(authnFailureReason) })
+      onAuthnFailed: () => {
+        return res.render('authentication-failed-page.njk', { error: 'no user matching your credentials could be found' })
+      },
+      onNoMatch: () => {
+        return res.render('authentication-failed-page.njk', { error: 'we could not match your identity in our database' })
+      },
+      onCancel: () => {
+        return res.render('authentication-failed-page.njk', { error: 'you cancelled' })
       },
       onError: (error) => renderErrorPage(res, error)
     }))
@@ -141,15 +147,6 @@ export function createApp (options: any) {
 
   function renderErrorPage (res: express.Response, error: Error) {
     return res.render('error-page.njk', { error: error.message })
-  }
-
-  function formatAuthnFailure (authnFailureReason: AuthnFailureReason) {
-    switch (authnFailureReason) {
-      case AuthnFailureReason.NO_MATCH:
-        return `no user matching your credentials could be found`
-      default:
-        return `something went wrong`
-    }
   }
 
   function saveRequestId (requestId: string, request: any) {

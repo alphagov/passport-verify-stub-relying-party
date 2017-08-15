@@ -68,9 +68,8 @@ describe('Stub RP Application', function () {
 
     it('should show an authentication failed page when user could not be authenticated', function () {
       mockVerifyServiceProvider.post('/translate-response', (req, res, next) => {
-        res.header('content-type', 'application/json').status(401).send({
-          reason: 'AUTHENTICATION_FAILED',
-          message: 'Authentication failed'
+        res.header('content-type', 'application/json').status(200).send({
+          scenario: Scenario.AUTHENTICATION_FAILED
         })
       })
       return client({
@@ -198,7 +197,7 @@ describe('Stub RP Application', function () {
       })
     })
 
-    it('should show the error page', function () {
+    it('should show the no match page', function () {
       return client('http://localhost:3201/verify/start')
       .then(() => client({
         uri: 'http://localhost:3201/verify/response',
@@ -208,7 +207,96 @@ describe('Stub RP Application', function () {
       }))
       .then(body => {
         assert.include(body, 'Authentication failed!', body)
-        assert.include(body, 'no user matching your credentials could be found', body)
+        assert.include(body, 'we could not match your identity in our database', body)
+      })
+    })
+  })
+
+  describe('when a user cancels during the verify journey', () => {
+    const requestId = '0f44aa97-fde9-49d1-b884-b7a449e46e7b'
+    const mockVerifyServiceProvider = express()
+    mockVerifyServiceProvider.use(bodyParser.json())
+    mockVerifyServiceProvider.post('/generate-request', (req, res, next) => {
+      res.send({
+        samlRequest: 'some-saml',
+        requestId: requestId,
+        ssoLocation: 'http://example.com'
+      })
+    })
+    mockVerifyServiceProvider.post('/translate-response', (req, res, next) => {
+      assert.equal(req.body.requestId, requestId)
+      res.send({
+        scenario: Scenario.CANCELLATION
+      })
+    })
+
+    beforeEach((done) => {
+      server = createApp({ verifyServiceProviderHost: 'http://localhost:3202' }).listen(3201, () => {
+        verifyServiceProviderServer = mockVerifyServiceProvider.listen(3202, done)
+      })
+    })
+
+    afterEach((done) => {
+      server.close(() => {
+        verifyServiceProviderServer.close(done)
+      })
+    })
+
+    it('should show the user cancellation page', () => {
+      return client('http://localhost:3201/verify/start')
+      .then(() => client({
+        uri: 'http://localhost:3201/verify/response',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'SAMLResponse=some-saml-response'
+      }))
+      .then(body => {
+        assert.include(body, 'Authentication failed!', body)
+        assert.include(body, 'you cancelled', body)
+      })
+    })
+  })
+
+  describe('when a REQUEST_ERROR scenario is returned', () => {
+    const requestId = '0f44aa97-fde9-49d1-b884-b7a449e46e7b'
+    const mockVerifyServiceProvider = express()
+    mockVerifyServiceProvider.use(bodyParser.json())
+    mockVerifyServiceProvider.post('/generate-request', (req, res, next) => {
+      res.send({
+        samlRequest: 'some-saml',
+        requestId: requestId,
+        ssoLocation: 'http://example.com'
+      })
+    })
+    mockVerifyServiceProvider.post('/translate-response', (req, res, next) => {
+      assert.equal(req.body.requestId, requestId)
+      res.send({
+        scenario: Scenario.REQUEST_ERROR
+      })
+    })
+
+    beforeEach((done) => {
+      server = createApp({ verifyServiceProviderHost: 'http://localhost:3202' }).listen(3201, () => {
+        verifyServiceProviderServer = mockVerifyServiceProvider.listen(3202, done)
+      })
+    })
+
+    afterEach((done) => {
+      server.close(() => {
+        verifyServiceProviderServer.close(done)
+      })
+    })
+
+    it('should show the error page', () => {
+      return client('http://localhost:3201/verify/start')
+      .then(() => client({
+        uri: 'http://localhost:3201/verify/response',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'SAMLResponse=some-saml-response'
+      }))
+      .then(body => {
+        assert.include(body, 'Something went wrong', body)
       })
     })
   })

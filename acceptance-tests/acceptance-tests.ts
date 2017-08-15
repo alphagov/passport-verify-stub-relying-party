@@ -75,6 +75,90 @@ describe('When running against compliance tool', function () {
     })
   })
 
+  describe('On receiving a no match response', () => {
+    let testCaseUri: string
+
+    beforeEach(() => {
+      setupComplianceTool(`pid`)
+    })
+
+    beforeEach(() => {
+      return makeAuthnRequest()
+        .then(() => getTestCaseUri(TestCaseId.BASIC_NO_MATCH))
+        .then(uri => testCaseUri = uri)
+    })
+
+    it('handles the response correctly', async () => {
+      await browser.visit(testCaseUri)
+
+      browser.assert.text('h1', 'Authentication failed!')
+      browser.assert.text('p', /Because we could not match your identity in our database/)
+    })
+  })
+
+  describe('On receiving a no authn context response', () => {
+    let testCaseUri: string
+
+    beforeEach(() => {
+      setupComplianceTool(`pid`)
+    })
+
+    beforeEach(() => {
+      return makeAuthnRequest()
+        .then(() => getTestCaseUri(TestCaseId.NO_AUTHENTICATION_CONTEXT))
+        .then(uri => testCaseUri = uri)
+    })
+
+    it('handles the response correctly', async () => {
+      await browser.visit(testCaseUri)
+
+      browser.assert.text('h1', 'Authentication failed!')
+      browser.assert.text('p', /Because you cancelled/)
+    })
+  })
+
+  describe('On receiving an authn failed response', () => {
+    let testCaseUri: string
+
+    beforeEach(() => {
+      setupComplianceTool(`pid`)
+    })
+
+    beforeEach(() => {
+      return makeAuthnRequest()
+        .then(() => getTestCaseUri(TestCaseId.AUTHENTICATION_FAILED))
+        .then(uri => testCaseUri = uri)
+    })
+
+    it('handles the response correctly', async () => {
+      await browser.visit(testCaseUri)
+
+      browser.assert.text('h1', 'Authentication failed!')
+      browser.assert.text('p', /Because no user matching your credentials could be found/)
+    })
+  })
+
+  describe('On receiving an error response', () => {
+    let testCaseUri: string
+
+    beforeEach(() => {
+      setupComplianceTool(`pid`)
+    })
+
+    beforeEach(() => {
+      return makeAuthnRequest()
+        .then(() => getTestCaseUri(TestCaseId.REQUESTER_ERROR))
+        .then(uri => testCaseUri = uri)
+    })
+
+    it('handles the response correctly', async () => {
+      await browser.visit(testCaseUri)
+
+      browser.assert.text('h1', 'Something went wrong')
+      browser.assert.text('p', /There was an error while trying to verify your identity\./)
+    })
+  })
+
   describe('On receiving a user account creation response', () => {
     let testCaseUri: string
 
@@ -98,27 +182,6 @@ describe('When running against compliance tool', function () {
       browser.assert.text('td', /lines/)
       browser.assert.text('td', /33 Example Street/)
       browser.assert.text('h2', /Address Attributes - not verified/)
-    })
-  })
-
-  describe('On receiving a no match response', () => {
-    let testCaseUri: string
-
-    beforeEach(() => {
-      setupComplianceTool(`pid`)
-    })
-
-    beforeEach(() => {
-      return makeAuthnRequest()
-        .then(() => getTestCaseUri(TestCaseId.BASIC_NO_MATCH))
-        .then(uri => testCaseUri = uri)
-    })
-
-    it('handles the response correctly', async () => {
-      await browser.visit(testCaseUri)
-
-      browser.assert.text('h1', 'Authentication failed!')
-      browser.assert.text('p', /Because no user matching your credentials could be found/)
     })
   })
 
