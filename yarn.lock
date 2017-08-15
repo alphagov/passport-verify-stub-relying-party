@@ -47,12 +47,6 @@
   version "2.2.41"
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-2.2.41.tgz#e27cf0817153eb9f2713b2d3f6c68f1e1c3ca608"
 
-"@types/node-fetch@^1.6.7":
-  version "1.6.7"
-  resolved "https://registry.yarnpkg.com/@types/node-fetch/-/node-fetch-1.6.7.tgz#521078e8f0c69a158e5022005aca92d2620f6d57"
-  dependencies:
-    "@types/node" "*"
-
 "@types/node@*", "@types/node@^7.0.31", "@types/node@^7.0.32":
   version "7.0.32"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.32.tgz#6afe6c66520a4c316623a14aef123908d01b4bba"
@@ -80,9 +74,22 @@
   dependencies:
     "@types/request" "*"
 
+"@types/request-promise-native@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@types/request-promise-native/-/request-promise-native-1.0.6.tgz#ab234405070074c5f98dbe943ae2960cbf1334d6"
+  dependencies:
+    "@types/request" "*"
+
 "@types/request@*", "@types/request@0.0.44":
   version "0.0.44"
   resolved "https://registry.yarnpkg.com/@types/request/-/request-0.0.44.tgz#77572176765376d2ba98654079311650cf4113af"
+  dependencies:
+    "@types/form-data" "*"
+    "@types/node" "*"
+
+"@types/request@^2.0.0":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@types/request/-/request-2.0.1.tgz#5fb3b273a19a67a698abfd38ece5cd8ef946bc6d"
   dependencies:
     "@types/form-data" "*"
     "@types/node" "*"
@@ -509,12 +516,6 @@ encodeurl@~1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/encodeurl/-/encodeurl-1.0.1.tgz#79e3d58655346909fe6f0f45a5de68103b294d20"
 
-encoding@^0.1.11:
-  version "0.1.12"
-  resolved "https://registry.yarnpkg.com/encoding/-/encoding-0.1.12.tgz#538b66f3ee62cd1ab51ec323829d1f9480c74beb"
-  dependencies:
-    iconv-lite "~0.4.13"
-
 escape-html@~1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/escape-html/-/escape-html-1.0.3.tgz#0258eae4d3d0c0974de1c169188ef0051d1d1988"
@@ -839,7 +840,7 @@ http-signature@~1.1.0:
     jsprim "^1.2.2"
     sshpk "^1.7.0"
 
-iconv-lite@0.4.15, iconv-lite@^0.4.13, iconv-lite@~0.4.13:
+iconv-lite@0.4.15, iconv-lite@^0.4.13:
   version "0.4.15"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.15.tgz#fe265a218ac6a57cfe854927e9d04c19825eddeb"
 
@@ -925,10 +926,6 @@ is-posix-bracket@^0.1.0:
 is-primitive@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/is-primitive/-/is-primitive-2.0.0.tgz#207bab91638499c07b2adf240a41a87210034575"
-
-is-stream@^1.0.1:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/is-stream/-/is-stream-1.1.0.tgz#12d4a3dd4e68e0b79ceb8dbc84173ae80d91ca44"
 
 is-typedarray@~1.0.0:
   version "1.0.0"
@@ -1195,13 +1192,6 @@ negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
 
-node-fetch@^1.7.1:
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-1.7.1.tgz#899cb3d0a3c92f952c47f1b876f4c8aeabd400d5"
-  dependencies:
-    encoding "^0.1.11"
-    is-stream "^1.0.1"
-
 node-pre-gyp@^0.6.36:
   version "0.6.36"
   resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.6.36.tgz#db604112cb74e0d477554e9b505b17abddfab786"
@@ -1350,18 +1340,20 @@ passport-strategy@1.x.x, passport-strategy@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/passport-strategy/-/passport-strategy-1.0.0.tgz#b5539aa8fc225a3d1ad179476ddf236b440f52e4"
 
-passport-verify@0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/passport-verify/-/passport-verify-0.3.1.tgz#2b282d35f3949be5f2ca6513910feb304e30c719"
+passport-verify@0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/passport-verify/-/passport-verify-0.4.1.tgz#d178391dd5cccf822e62c34dba5c78bdfb77118b"
   dependencies:
     "@types/express-serve-static-core" "^4.0.48"
     "@types/mocha" "^2.2.41"
     "@types/node" "^7.0.32"
-    "@types/node-fetch" "^1.6.7"
     "@types/passport-strategy" "^0.2.30"
+    "@types/request" "^2.0.0"
+    "@types/request-promise-native" "^1.0.6"
     "@types/serve-static" "^1.7.31"
-    node-fetch "^1.7.1"
     passport-strategy "^1.0.0"
+    request "^2.81.0"
+    request-promise-native "^1.0.4"
 
 passport@^0.3.2:
   version "0.3.2"

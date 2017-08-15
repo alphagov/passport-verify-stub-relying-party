@@ -101,6 +101,27 @@ describe('When running against compliance tool', function () {
     })
   })
 
+  describe('On receiving a no match response', () => {
+    let testCaseUri: string
+
+    beforeEach(() => {
+      setupComplianceTool(`pid`)
+    })
+
+    beforeEach(() => {
+      return makeAuthnRequest()
+        .then(() => getTestCaseUri(TestCaseId.BASIC_NO_MATCH))
+        .then(uri => testCaseUri = uri)
+    })
+
+    it('handles the response correctly', async () => {
+      await browser.visit(testCaseUri)
+
+      browser.assert.text('h1', 'Authentication failed!')
+      browser.assert.text('p', /Because no user matching your credentials could be found/)
+    })
+  })
+
   describe('On receiving an incorrectly signed response', () => {
     let testCaseUri: string
 

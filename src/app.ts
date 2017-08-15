@@ -1,7 +1,7 @@
 import * as express from 'express'
 import * as session from 'express-session'
 import * as passport from 'passport'
-import { createStrategy } from 'passport-verify'
+import { createStrategy, createResponseHandler, AuthnFailureReason, TranslatedResponseBody } from 'passport-verify'
 import * as bodyParser from 'body-parser'
 import * as nunjucks from 'nunjucks'
 import fakeUserDatabase from './fakeUserDatabase'
@@ -75,18 +75,20 @@ export function createApp (options: any) {
   app.get('/verify/start', passport.authenticate('verify'))
 
   app.post('/verify/response', (req, res, next) => {
-    const authMiddleware = passport.authenticate('verify', function (error: Error, user: any, infoOrError: any, status: number) {
-      if (error) {
+    const authMiddleware = passport.authenticate('verify', createResponseHandler({
+      onMatch: (user) => {
+        return req.logIn(user, () => res.redirect('/service-landing-page'))
+      },
+      onCreateUser: (user) => {
+        return req.logIn(user, () => res.redirect('/service-landing-page'))
+      },
+      onAuthnFailed: (authnFailureReason) => {
+        return res.render('authentication-failed-page.njk', { error: formatAuthnFailure(authnFailureReason) })
+      },
+      onError: (error) => {
         return res.render('error-page.njk', { error: error.message })
       }
-
-      if (user) {
-        return req.logIn(user, () => res.redirect('/service-landing-page'))
-      }
-
-      return res.render('authentication-failed-page.njk', { error: infoOrError })
-
-    })
+    }))
     authMiddleware(req as any, res as any, next)
   })
 
@@ -103,31 +105,44 @@ export function createApp (options: any) {
     res.render('authentication-failed-page.njk', {})
   })
 
-  function createUser (user: any) {
+  function createUser (responseBody: TranslatedResponseBody) {
     // This should be an error case if the local matching strategy is
     // done correctly.
-    if (fakeUserDatabase[user.pid]) {
+    if (fakeUserDatabase[responseBody.pid]) {
       throw new Error(
         'Local matching strategy has defined ' +
         'the user to be new to the application, ' +
         'but the User PID already exists.')
     }
 
-    fakeUserDatabase[user.pid] = user
-    return Object.assign({ levelOfAssurance: user.levelOfAssurance }, fakeUserDatabase[user.pid])
+    fakeUserDatabase[responseBody.pid] = {
+      pid: responseBody.pid,
+      attributes: responseBody.attributes
+    }
+
+    return Object.assign({ levelOfAssurance: responseBody.levelOfAssurance }, fakeUserDatabase[responseBody.pid])
   }
 
-  function verifyUser (user: any) {
+  function verifyUser (responseBody: TranslatedResponseBody) {
     // This should be an error case if the local matching strategy is
     // done correctly.
-    if (!fakeUserDatabase[user.pid]) {
+    if (!fakeUserDatabase[responseBody.pid]) {
       throw new Error(
         'Local matching strategy has defined ' +
         'that the user exists, but the PID could ' +
         'not be found in the database.')
     }
 
-    return Object.assign({ levelOfAssurance: user.levelOfAssurance }, fakeUserDatabase[user.pid])
+    return Object.assign({ levelOfAssurance: responseBody.levelOfAssurance }, fakeUserDatabase[responseBody.pid])
+  }
+
+  function formatAuthnFailure (authnFailureReason: AuthnFailureReason) {
+    switch (authnFailureReason) {
+      case AuthnFailureReason.NO_MATCH:
+        return `no user matching your credentials could be found`
+      default:
+        return `something went wrong`
+    }
   }
 
   function saveRequestId (requestId: string, request: any) {
