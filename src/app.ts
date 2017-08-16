@@ -85,9 +85,7 @@ export function createApp (options: any) {
       onAuthnFailed: (authnFailureReason) => {
         return res.render('authentication-failed-page.njk', { error: formatAuthnFailure(authnFailureReason) })
       },
-      onError: (error) => {
-        return res.render('error-page.njk', { error: error.message })
-      }
+      onError: (error) => renderErrorPage(res, error)
     }))
     authMiddleware(req as any, res as any, next)
   })
@@ -103,6 +101,11 @@ export function createApp (options: any) {
 
   app.get('/authentication-failed-page', (req, res) => {
     res.render('authentication-failed-page.njk', {})
+  })
+
+  app.use((err :Error, req: express.Request, res: express.Response, next: Function) => {
+    console.error(err.stack)
+    renderErrorPage(res, err)
   })
 
   function createUser (responseBody: TranslatedResponseBody) {
@@ -134,6 +137,10 @@ export function createApp (options: any) {
     }
 
     return Object.assign({ levelOfAssurance: responseBody.levelOfAssurance }, fakeUserDatabase[responseBody.pid])
+  }
+
+  function renderErrorPage (res: express.Response, error: Error) {
+    return res.render('error-page.njk', { error: error.message })
   }
 
   function formatAuthnFailure (authnFailureReason: AuthnFailureReason) {
