@@ -109,7 +109,7 @@ export function createApp (options: any) {
     res.render('authentication-failed-page.njk', {})
   })
 
-  app.use((err :Error, req: express.Request, res: express.Response, next: Function) => {
+  app.use((err: Error, req: express.Request, res: express.Response, next: Function) => {
     console.error(err.stack)
     renderErrorPage(res, err)
   })
