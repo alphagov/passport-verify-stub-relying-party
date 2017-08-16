@@ -47,9 +47,13 @@
   version "2.2.41"
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-2.2.41.tgz#e27cf0817153eb9f2713b2d3f6c68f1e1c3ca608"
 
-"@types/node@*", "@types/node@^7.0.31", "@types/node@^7.0.32":
+"@types/node@*", "@types/node@^7.0.31":
   version "7.0.32"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.32.tgz#6afe6c66520a4c316623a14aef123908d01b4bba"
+
+"@types/node@^7.0.41":
+  version "7.0.41"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.41.tgz#4dbce9ae4b551df1ef4047904600c5814d58e1ce"
 
 "@types/nunjucks@0.0.32":
   version "0.0.32"
@@ -87,7 +91,7 @@
     "@types/form-data" "*"
     "@types/node" "*"
 
-"@types/request@^2.0.0":
+"@types/request@^2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@types/request/-/request-2.0.1.tgz#5fb3b273a19a67a698abfd38ece5cd8ef946bc6d"
   dependencies:
@@ -1340,15 +1344,15 @@ passport-strategy@1.x.x, passport-strategy@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/passport-strategy/-/passport-strategy-1.0.0.tgz#b5539aa8fc225a3d1ad179476ddf236b440f52e4"
 
-passport-verify@0.4.2:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/passport-verify/-/passport-verify-0.4.2.tgz#9a87d3024db9a37543f9551ebd130c063ce43a77"
+passport-verify@0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/passport-verify/-/passport-verify-0.5.0.tgz#d0851919974d4bc5e8289ea8b5921c225686277d"
   dependencies:
     "@types/express-serve-static-core" "^4.0.48"
     "@types/mocha" "^2.2.41"
-    "@types/node" "^7.0.32"
+    "@types/node" "^7.0.41"
     "@types/passport-strategy" "^0.2.30"
-    "@types/request" "^2.0.0"
+    "@types/request" "^2.0.1"
     "@types/request-promise-native" "^1.0.6"
     "@types/serve-static" "^1.7.31"
     passport-strategy "^1.0.0"
