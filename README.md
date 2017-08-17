@@ -32,6 +32,14 @@ Run acceptance-tests with:
 npm run acceptance-tests
 ```
 
+Alternatively, to do the above pointing at the verify-service-provider-dev instance on paas, use:
+
+```
+npm run pre-commit-paas
+npm run startup-paas
+npm run acceptance-tests-paas
+```
+
 In order to run the service using a locally linked copy of 'passport-verify' typescript has a bug that duplicates 
 dependencies, to get around this, the following dependencies need to be removed.
 
