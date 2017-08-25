@@ -13,6 +13,10 @@
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.0.1.tgz#37fea779617cfec3fd2b19a0247e8bbdd5133bf6"
 
+"@types/debug@0.0.30":
+  version "0.0.30"
+  resolved "https://registry.yarnpkg.com/@types/debug/-/debug-0.0.30.tgz#dc1e40f7af3b9c815013a7860e6252f6352a84df"
+
 "@types/express-serve-static-core@*", "@types/express-serve-static-core@^4.0.48":
   version "4.0.48"
   resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-4.0.48.tgz#b4fa06b0fce282e582b4535ff7fac85cc90173e9"
@@ -71,12 +75,6 @@
   resolved "https://registry.yarnpkg.com/@types/passport/-/passport-0.3.3.tgz#463455c4245ed232d6ce43615580c1001ade8234"
   dependencies:
     "@types/express" "*"
-
-"@types/request-promise-native@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@types/request-promise-native/-/request-promise-native-1.0.5.tgz#51dd393ce6aa03f12a39e8c67eb2337176e8a699"
-  dependencies:
-    "@types/request" "*"
 
 "@types/request-promise-native@^1.0.6":
   version "1.0.6"
@@ -458,6 +456,12 @@ debug@2.6.0:
 debug@2.6.7, debug@^2.2, debug@^2.2.0:
   version "2.6.7"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.7.tgz#92bad1f6d05bbb6bba22cca88bcd0ec894c2861e"
+  dependencies:
+    ms "2.0.0"
+
+debug@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-3.0.1.tgz#0564c612b521dc92d9f2988f0549e34f9c98db64"
   dependencies:
     ms "2.0.0"
 
@@ -1344,10 +1348,11 @@ passport-strategy@1.x.x, passport-strategy@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/passport-strategy/-/passport-strategy-1.0.0.tgz#b5539aa8fc225a3d1ad179476ddf236b440f52e4"
 
-passport-verify@0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/passport-verify/-/passport-verify-0.7.0.tgz#42081a0fdc381e3b623e88e15f1353f06468006e"
+passport-verify@0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/passport-verify/-/passport-verify-0.8.0.tgz#268e30b58e33d18e2b54574ffc2df40057440385"
   dependencies:
+    "@types/debug" "0.0.30"
     "@types/express-serve-static-core" "^4.0.48"
     "@types/mocha" "^2.2.41"
     "@types/node" "^7.0.41"
@@ -1355,6 +1360,7 @@ passport-verify@0.7.0:
     "@types/request" "^2.0.1"
     "@types/request-promise-native" "^1.0.6"
     "@types/serve-static" "^1.7.31"
+    debug "^3.0.1"
     passport-strategy "^1.0.0"
     request "^2.81.0"
     request-promise-native "^1.0.4"

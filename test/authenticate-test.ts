@@ -15,7 +15,7 @@ describe('Stub RP Application', function () {
   describe('when an existing user logs in', () => {
 
     beforeEach((done) => {
-      server = createApp({ verifyServiceProviderHost: 'http://localhost:3202'}).listen(3201, () => {
+      server = createApp('http://localhost:3202').listen(3201, () => {
         mockVerifyServiceProvider = express()
         verifyServiceProviderServer = mockVerifyServiceProvider.listen(3202, done)
       })
@@ -138,7 +138,7 @@ describe('Stub RP Application', function () {
     })
 
     beforeEach((done) => {
-      server = createApp({ verifyServiceProviderHost: 'http://localhost:3202' }).listen(3201, () => {
+      server = createApp('http://localhost:3202').listen(3201, () => {
         verifyServiceProviderServer = mockVerifyServiceProvider.listen(3202, done)
       })
     })
@@ -186,7 +186,7 @@ describe('Stub RP Application', function () {
     })
 
     beforeEach((done) => {
-      server = createApp({ verifyServiceProviderHost: 'http://localhost:3202' }).listen(3201, () => {
+      server = createApp('http://localhost:3202').listen(3201, () => {
         verifyServiceProviderServer = mockVerifyServiceProvider.listen(3202, done)
       })
     })
@@ -231,7 +231,7 @@ describe('Stub RP Application', function () {
     })
 
     beforeEach((done) => {
-      server = createApp({ verifyServiceProviderHost: 'http://localhost:3202' }).listen(3201, () => {
+      server = createApp('http://localhost:3202').listen(3201, () => {
         verifyServiceProviderServer = mockVerifyServiceProvider.listen(3202, done)
       })
     })
@@ -276,7 +276,7 @@ describe('Stub RP Application', function () {
     })
 
     beforeEach((done) => {
-      server = createApp({ verifyServiceProviderHost: 'http://localhost:3202' }).listen(3201, () => {
+      server = createApp('http://localhost:3202').listen(3201, () => {
         verifyServiceProviderServer = mockVerifyServiceProvider.listen(3202, done)
       })
     })

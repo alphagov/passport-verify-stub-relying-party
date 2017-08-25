@@ -26,7 +26,7 @@
     "govuk_template_jinja": "^0.22.2",
     "nunjucks": "^3.0.1",
     "passport": "^0.3.2",
-    "passport-verify": "0.7.0",
+    "passport-verify": "0.8.0",
     "request": "^2.81.0",
     "request-promise-native": "^1.0.4",
     "zombie": "^5.0.7"
@@ -41,7 +41,7 @@
     "@types/node": "^7.0.31",
     "@types/nunjucks": "0.0.32",
     "@types/request": "0.0.44",
-    "@types/request-promise-native": "^1.0.5",
+    "@types/request-promise-native": "^1.0.6",
     "@types/serve-static": "^1.7.31",
     "chai": "^4.0.2",
     "mocha": "^3.4.2",

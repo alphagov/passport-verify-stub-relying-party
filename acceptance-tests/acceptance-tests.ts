@@ -27,7 +27,7 @@ describe('When running against compliance tool', function () {
   let testPort: number
 
   before(done => {
-    server = createApp({ verifyServiceProviderHost: VERIFY_SERVICE_PROVIDER_HOST }).listen(0, done)
+    server = createApp(VERIFY_SERVICE_PROVIDER_HOST).listen(0, done)
     testPort = server.address().port
   })
 

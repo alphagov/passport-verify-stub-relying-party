@@ -6,7 +6,7 @@ import * as bodyParser from 'body-parser'
 import * as nunjucks from 'nunjucks'
 import fakeUserDatabase from './fakeUserDatabase'
 
-export function createApp (options: any) {
+export function createApp (verifyServiceProviderHost: string) {
   const _passport: any = passport
   const app: express.Application = express()
 
@@ -38,9 +38,7 @@ export function createApp (options: any) {
 
   passport.use(createStrategy(
 
-    options.verifyServiceProviderHost,
-
-    options.logger,
+    verifyServiceProviderHost,
 
     // A callback for a new user authentication.
     // This function is called at the end of the authentication flow
