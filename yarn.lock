@@ -1348,7 +1348,7 @@ passport-strategy@1.x.x, passport-strategy@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/passport-strategy/-/passport-strategy-1.0.0.tgz#b5539aa8fc225a3d1ad179476ddf236b440f52e4"
 
-passport-verify@0.8.0:
+passport-verify@^0.8.0:
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/passport-verify/-/passport-verify-0.8.0.tgz#268e30b58e33d18e2b54574ffc2df40057440385"
   dependencies:
