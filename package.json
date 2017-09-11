@@ -5,8 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "preinstall": "node -e 'if(!/yarn\\.js$/.test(process.env.npm_execpath))throw \"NPM not supported, please use Yarn to install dependencies ($ yarn install).\\n\"'",
-    "test": "tsc && ./node_modules/.bin/mocha ./build/test/* && npm run lint",
-    "acceptance-tests": "tsc && ./node_modules/.bin/mocha ./build/acceptance-tests/* && npm run lint",
+    "test": "npm run clean && tsc && ./node_modules/.bin/mocha ./build/test/* && npm run lint",
+    "acceptance-tests": "npm run clean && tsc && ./node_modules/.bin/mocha ./build/acceptance-tests/* && npm run lint",
     "acceptance-tests-paas": "VERIFY_SERVICE_PROVIDER_HOST=https://verify-service-provider-dev.cloudapps.digital npm run acceptance-tests",
     "clean": "rm -rf build/*",
     "build": "npm run clean && tsc",
