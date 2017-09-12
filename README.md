@@ -17,30 +17,24 @@ yarn install
 Run the tests with:
 
 ```
-./pre-commit.sh
+npm run pre-commit [--paas]
 ```
 
 Start the application with:
 
 ```
-./startup.sh
+npm run startup [--paas]
 ```
 
 Run acceptance-tests with:
 
 ```
-npm run acceptance-tests
+npm run acceptance-tests [--paas]
 ```
 
-Alternatively, to do the above pointing at the verify-service-provider-dev instance on paas, use:
+For each of the above, use the ```--paas``` flag to run against the verify-service-provider-dev instance on paas. Otherwise it will use the value of the VERIFY_SERVICE_PROVIDER_HOST environment variable, defaulting to a local one.
 
-```
-npm run pre-commit-paas
-npm run startup-paas
-npm run acceptance-tests-paas
-```
-
-In order to run the service using a locally linked copy of 'passport-verify' typescript has a bug that duplicates 
+In order to run the service using a locally linked copy of 'passport-verify' typescript has a bug that duplicates
 dependencies, to get around this, the following dependencies need to be removed.
 
 ```

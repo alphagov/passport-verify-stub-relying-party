@@ -21,7 +21,11 @@ describe('When running against compliance tool', function () {
   this.timeout(5000)
 
   const browser = new Browser()
-  const VERIFY_SERVICE_PROVIDER_HOST = process.env['VERIFY_SERVICE_PROVIDER_HOST'] || 'http://localhost:50400'
+  let VERIFY_SERVICE_PROVIDER_HOST = process.env['VERIFY_SERVICE_PROVIDER_HOST']
+  if (!VERIFY_SERVICE_PROVIDER_HOST) {
+    console.log('Warning: VERIFY_SERVICE_PROVIDER_HOST not set, using localhost:50400 by default. Use the --paas flag to run against the service provider on paas.')
+    VERIFY_SERVICE_PROVIDER_HOST = 'http://localhost:50400'
+  }
   const COMPLIANCE_TOOL_HOST = 'https://compliance-tool-reference.ida.digital.cabinet-office.gov.uk'
   let server: Server
   let testPort: number
