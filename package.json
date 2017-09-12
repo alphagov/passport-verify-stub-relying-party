@@ -5,15 +5,14 @@
   "main": "src/index.js",
   "scripts": {
     "preinstall": "node -e 'if(!/yarn\\.js$/.test(process.env.npm_execpath))throw \"NPM not supported, please use Yarn to install dependencies ($ yarn install).\\n\"'",
-    "test": "npm run clean && tsc && ./node_modules/.bin/mocha ./build/test/* && npm run lint",
-    "acceptance-tests": "npm run clean && tsc && ./node_modules/.bin/mocha ./build/acceptance-tests/* && npm run lint",
-    "acceptance-tests-paas": "VERIFY_SERVICE_PROVIDER_HOST=https://verify-service-provider-dev.cloudapps.digital npm run acceptance-tests",
     "clean": "rm -rf build/*",
     "build": "npm run clean && tsc",
-    "start": "node ./build/src/index.js",
     "lint": "./node_modules/.bin/tslint -c tslint.json -p .",
-    "pre-commit-paas": "VERIFY_SERVICE_PROVIDER_HOST=https://verify-service-provider-dev.cloudapps.digital ./pre-commit.sh",
-    "startup-paas": "VERIFY_SERVICE_PROVIDER_HOST=https://verify-service-provider-dev.cloudapps.digital ./startup.sh"
+    "start": "node ./build/src/index.js",
+    "startup": "if [ $npm_config_paas ]; then export VERIFY_SERVICE_PROVIDER_HOST=https://verify-service-provider-dev.cloudapps.digital; fi; npm run build && npm run start",
+    "test": "npm run build && ./node_modules/.bin/mocha ./build/test/* && npm run lint",
+    "acceptance-tests": "if [ $npm_config_paas ]; then export VERIFY_SERVICE_PROVIDER_HOST=https://verify-service-provider-dev.cloudapps.digital; fi; npm run build && ./node_modules/.bin/mocha ./build/acceptance-tests/* && npm run lint",
+    "pre-commit": "if [ $npm_config_paas ]; then export VERIFY_SERVICE_PROVIDER_HOST=https://verify-service-provider-dev.cloudapps.digital; fi; npm run build && npm run lint && ./node_modules/.bin/mocha ./build/test/* && ./node_modules/.bin/mocha ./build/acceptance-tests/*"
   },
   "engines": {
     "node": "6.11.1"
