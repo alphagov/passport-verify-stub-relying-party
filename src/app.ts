@@ -161,11 +161,7 @@ export function createApp (verifyServiceProviderHost: string) {
   }
 
   function wrapSamlForm (formHtml: string) {
-    return `
-      <link href="../css/app.css" media="screen" rel="stylesheet">
-      <main id='content'>
-        ${formHtml}
-      </main>`
+    return nunjucks.render('saml-form-wrapper.njk', { form: formHtml })
   }
 
   return app
