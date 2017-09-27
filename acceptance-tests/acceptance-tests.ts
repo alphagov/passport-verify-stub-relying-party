@@ -181,11 +181,7 @@ describe('When running against compliance tool', function () {
 
       browser.assert.text('h1', 'Success!')
 
-      browser.assert.text('td', /firstName/)
-      browser.assert.text('td', /Screaming/)
-      browser.assert.text('td', /lines/)
-      browser.assert.text('td', /33 Example Street/)
-      browser.assert.text('h2', /Address Attributes - not verified/)
+      browser.assert.text('p', /Screaming/)
     })
   })
 

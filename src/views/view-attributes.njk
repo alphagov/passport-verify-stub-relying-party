@@ -1,0 +1,51 @@
+{% extends "layouts/govuk_template.html" %}
+
+{% block head %}
+<link href="css/app.css" media="screen" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<main id="content">
+<p>
+<table>
+    <thead>
+        <tr>
+            <th>Attribute Name</th><th>Attribute Value</th><th>Attribute Verified</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for name, attribute in user.attributes %}
+            {% if name !== 'address' %}
+                <tr>
+                    <td><code>{{name}}</code></td>
+                    <td><code>{{attribute.value}}</code></td>
+                    <td><code>{{attribute.verified}}</code></td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </tbody>
+
+</table>
+</p>
+{% if user.attributes.address %}
+    <h2 class="heading-medium">Address Attributes - {{ "" if user.attributes.address.verifed else "not " }}verified</h2>
+    <p>
+        <table>
+            <thead> 
+                <th>Attribute Name</th><th>Attribute Value</th>
+            </thead>
+            {% for addressKey, addressValue in user.attributes.address.value %}
+        
+                <tbody>
+                    <tr>
+                        <td><code>{{addressKey}}</code></td>
+                        <td><code>{{addressValue}}</code></td>
+                    </tr>
+                </tbody>
+            {% endfor %}
+        </table>
+    </p>
+{% endif %}
+</main>
+{% endblock %}
+

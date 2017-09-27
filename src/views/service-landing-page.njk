@@ -8,47 +8,9 @@
 <main id="content">
 <h1>Success!</h1>
 <p>You have successfully logged in as <em>{{user.attributes.firstName.value}} {{user.attributes.surname.value}}</em> at level of assurance {{user.levelOfAssurance}}.</p>
-<p>
-<table>
-    <thead>
-        <tr>
-            <th>Attribute Name</th><th>Attribute Value</th><th>Attribute Verified</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for name, attribute in user.attributes %}
-            {% if name !== 'address' %}
-                <tr>
-                    <td><code>{{name}}</code></td>
-                    <td><code>{{attribute.value}}</code></td>
-                    <td><code>{{attribute.verified}}</code></td>
-                </tr>
-            {% endif %}
-        {% endfor %}
-    </tbody>
-
-</table>
-</p>
-{% if user.attributes.address %}
-    <h2 class="heading-medium">Address Attributes - {{ "" if user.attributes.address.verifed else "not " }}verified</h2>
-    <p>
-        <table>
-            <thead> 
-                <th>Attribute Name</th><th>Attribute Value</th>
-            </thead>
-            {% for addressKey, addressValue in user.attributes.address.value %}
-        
-                <tbody>
-                    <tr>
-                        <td><code>{{addressKey}}</code></td>
-                        <td><code>{{addressValue}}</code></td>
-                    </tr>
-                </tbody>
-            {% endfor %}
-        </table>
-    </p>
-{% endif %}
 <p>This is only a stub service. In a real service you'd be able to interact with the government now.</p>
+<a class="button button-start" href="/celebrate">Celebrate</a>
+<a class="button button-start" href="/view-attributes">View attributes</a>
 </main>
 {% endblock %}
 

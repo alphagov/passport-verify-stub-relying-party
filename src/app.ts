@@ -107,6 +107,14 @@ export function createApp (verifyServiceProviderHost: string) {
     res.render('authentication-failed-page.njk', {})
   })
 
+  app.get('/celebrate', redirectIfNoSession, (req, res) => {
+    res.render('celebrate.njk')
+  })
+
+  app.get('/view-attributes', redirectIfNoSession, (req, res) => {
+    res.render('view-attributes.njk', { user: req.user })
+  })
+
   app.use((err: Error, req: express.Request, res: express.Response, next: Function) => {
     console.error(err.stack)
     renderErrorPage(res, err)
