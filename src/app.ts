@@ -66,7 +66,10 @@ export function createApp (verifyServiceProviderHost: string) {
     saveRequestId,
 
     // A corresponding callback that loads the requestID
-    loadRequestId
+    loadRequestId,
+
+    // A function to add our stylesheet to the autopost saml form provided by passport-verify
+    wrapSamlForm
   ))
 
   app.get('/', (req, res) => res.render('index.njk'))
@@ -163,6 +166,10 @@ export function createApp (verifyServiceProviderHost: string) {
 
   function loadRequestId (request: any) {
     return request.session.requestId
+  }
+
+  function wrapSamlForm (formHtml: string) {
+    return nunjucks.render('saml-form-wrapper.njk', { form: formHtml })
   }
 
   return app

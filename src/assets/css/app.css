@@ -32,7 +32,7 @@
     }
 }
 
-.button {
+.button, .passport-verify-button {
     background-color: #00823b;
     position: relative;
     display: -moz-inline-stack;
@@ -66,6 +66,10 @@
 
 .button:visited {
     background-color: #00823b;
+}
+
+form {
+    font-family: "nta", Arial, sans-serif;
 }
 
 table {
