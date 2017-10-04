@@ -36,4 +36,5 @@ cfLogin() {
 cfLogin
 
 cf push -f dev-manifest.yml
-
+cf push -f dev-manifest-multi-one.yml
+cf push -f dev-manifest-multi-two.yml
