@@ -6,7 +6,7 @@ import * as bodyParser from 'body-parser'
 import * as nunjucks from 'nunjucks'
 import fakeUserDatabase from './fakeUserDatabase'
 
-export function createApp (verifyServiceProviderHost: string) {
+export function createApp (verifyServiceProviderHost: string, entityId?: string) {
   const _passport: any = passport
   const app: express.Application = express()
 
@@ -66,7 +66,11 @@ export function createApp (verifyServiceProviderHost: string) {
     saveRequestId,
 
     // A corresponding callback that loads the requestID
-    loadRequestId
+    loadRequestId,
+
+    // The EntityId of this service (only required if running against a multi tenanted
+    // Verify Service Provider, otherwise this function may be called without this argument).
+    entityId
   ))
 
   app.get('/', (req, res) => res.render('index.njk'))
