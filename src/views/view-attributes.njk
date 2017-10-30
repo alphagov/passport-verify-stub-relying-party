@@ -16,7 +16,7 @@
     </thead>
     <tbody>
         {% for name, attribute in user.attributes %}
-            {% if name !== 'address' %}
+            {% if name !== 'address' and name !== 'addressHistory' %}
                 <tr>
                     <td><code>{{name}}</code></td>
                     <td><code>{{attribute.value}}</code></td>
@@ -25,18 +25,17 @@
             {% endif %}
         {% endfor %}
     </tbody>
-
 </table>
 </p>
 {% if user.attributes.address %}
-    <h2 class="heading-medium">Address Attributes - {{ "" if user.attributes.address.verifed else "not " }}verified</h2>
+    <h2 class="heading-medium">Current Address - {{ "" if user.attributes.address.verified else "not " }}verified</h2>
     <p>
         <table>
             <thead> 
                 <th>Attribute Name</th><th>Attribute Value</th>
             </thead>
             {% for addressKey, addressValue in user.attributes.address.value %}
-        
+
                 <tbody>
                     <tr>
                         <td><code>{{addressKey}}</code></td>
@@ -46,6 +45,27 @@
             {% endfor %}
         </table>
     </p>
+{% endif %}
+{% if user.attributes.addressHistory %}
+    <h2 class="heading-medium">Address History</h2>
+    {% for address in user.attributes.addressHistory %}
+        <h2 class="heading-medium">Address {{loop.index}} - {{ "" if address.verified else "not " }}verified</h2>
+        <p>
+            <table>
+                <thead>
+                    <th>Attribute Name</th><th>Attribute Value</th>
+                </thead>
+                {% for addressKey, addressValue in address.value %}
+                    <tbody>
+                        <tr>
+                            <td><code>{{addressKey}}</code></td>
+                        <td><code>{{addressValue}}</code></td>
+                        </tr>
+                    </tbody>
+                {% endfor %}
+            </table>
+        <p>
+    {% endfor %}
 {% endif %}
 </main>
 {% endblock %}
