@@ -234,6 +234,7 @@ entityIds.forEach(entityId => {
             'DATE_OF_BIRTH_VERIFIED',
             'CURRENT_ADDRESS',
             'CURRENT_ADDRESS_VERIFIED',
+            'ADDRESS_HISTORY',
             'CYCLE_3'
           ]
         }
