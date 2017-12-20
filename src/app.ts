@@ -4,9 +4,9 @@ import * as passport from 'passport'
 import { createStrategy, createResponseHandler, TranslatedResponseBody } from 'passport-verify'
 import * as bodyParser from 'body-parser'
 import * as nunjucks from 'nunjucks'
-import fakeUserDatabase from './fakeUserDatabase'
+import { DatabaseWrapper } from './databaseWrapper'
 
-export function createApp (verifyServiceProviderHost: string, entityId?: string) {
+export function createApp (verifyServiceProviderHost: string, db: DatabaseWrapper, entityId?: string) {
   const _passport: any = passport
   const app: express.Application = express()
 
@@ -124,35 +124,16 @@ export function createApp (verifyServiceProviderHost: string, entityId?: string)
     renderErrorPage(res, err)
   })
 
-  function createUser (responseBody: TranslatedResponseBody) {
-    // This should be an error case if the local matching strategy is
-    // done correctly.
-    if (fakeUserDatabase[responseBody.pid]) {
-      throw new Error(
-        'Local matching strategy has defined ' +
-        'the user to be new to the application, ' +
-        'but the User PID already exists.')
-    }
+  async function createUser (responseBody: TranslatedResponseBody) {
+    let user = await db.createUser(responseBody)
 
-    fakeUserDatabase[responseBody.pid] = {
-      pid: responseBody.pid,
-      attributes: responseBody.attributes
-    }
-
-    return Object.assign({ levelOfAssurance: responseBody.levelOfAssurance }, fakeUserDatabase[responseBody.pid])
+    return Object.assign({ levelOfAssurance: responseBody.levelOfAssurance }, user)
   }
 
-  function verifyUser (responseBody: TranslatedResponseBody) {
-    // This should be an error case if the local matching strategy is
-    // done correctly.
-    if (!fakeUserDatabase[responseBody.pid]) {
-      throw new Error(
-        'Local matching strategy has defined ' +
-        'that the user exists, but the PID could ' +
-        'not be found in the database.')
-    }
+  async function verifyUser (responseBody: TranslatedResponseBody) {
+    let user = await db.fetchVerifiedUser(responseBody.pid)
 
-    return Object.assign({ levelOfAssurance: responseBody.levelOfAssurance }, fakeUserDatabase[responseBody.pid])
+    return Object.assign({ levelOfAssurance: responseBody.levelOfAssurance }, user)
   }
 
   function renderErrorPage (res: express.Response, error: Error) {

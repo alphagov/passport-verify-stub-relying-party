@@ -8,6 +8,7 @@ function cleanup {
 trap cleanup EXIT
 cd "$(dirname "$0")"
 
+APP_NAME="passport-verify-stub-relying-party-dev"
 
 cfLogin() {
   if [ -z "${CF_USER:-}" ]; then
@@ -31,9 +32,22 @@ cfLogin() {
   fi
 }
 
+cfSetDatabaseConnectionString() {
+    cf unset-env $APP_NAME DATABASE_CONNECTION_STRING
+    DATABASE_URL="$(cf env $APP_NAME | grep -o '"postgres://[^"]*' | tr -d '"')"
+    cf set-env $APP_NAME DATABASE_CONNECTION_STRING "$DATABASE_URL?ssl=true"
+}
+
+cfBindWithDatabase() {
+    cf bind-service $APP_NAME verify-local-matching-service-example-db
+    cf restart $APP_NAME
+}
+
 ./docker-pre-commit.sh
 
 cfLogin
+cfBindWithDatabase
+cfSetDatabaseConnectionString
 
 cf push -f dev-manifest.yml
 
