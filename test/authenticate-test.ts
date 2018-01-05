@@ -1,21 +1,26 @@
 import { assert } from 'chai'
+import { stub } from 'sinon'
 import * as request from 'request-promise-native'
 import { createApp } from '../src/app'
 import * as http from 'http'
 import * as express from 'express'
 import * as bodyParser from 'body-parser'
 import { Scenario } from 'passport-verify'
+import { DatabaseWrapper } from '../src/databaseWrapper'
 
 describe('Stub RP Application', function () {
   let server: http.Server
   let verifyServiceProviderServer: http.Server
   let mockVerifyServiceProvider: express.Application
   const client = request.defaults({ jar: true, simple: false, followAllRedirects: true })
+  const fetchVerifiedUserStub = stub()
+  const createUserStub = stub()
+  const mockDb: DatabaseWrapper = { fetchVerifiedUser: fetchVerifiedUserStub, createUser: createUserStub } as any
 
   describe('when an existing user logs in', () => {
 
     beforeEach((done) => {
-      server = createApp('http://localhost:3202').listen(3201, () => {
+      server = createApp('http://localhost:3202', mockDb).listen(3201, () => {
         mockVerifyServiceProvider = express()
         verifyServiceProviderServer = mockVerifyServiceProvider.listen(3202, done)
       })
@@ -46,6 +51,15 @@ describe('Stub RP Application', function () {
     })
 
     it('should show the service page when user is authenticated', function () {
+      fetchVerifiedUserStub.returns({
+        pid: 'billy',
+        id: 1,
+        attributes: {
+          firstName: 'Billy',
+          surname: 'Batson'
+        }
+      })
+
       mockVerifyServiceProvider.post('/translate-response', (req, res, next) => {
         res.header('content-type', 'application/json').send({
           pid: 'billy',
@@ -138,7 +152,7 @@ describe('Stub RP Application', function () {
     })
 
     beforeEach((done) => {
-      server = createApp('http://localhost:3202').listen(3201, () => {
+      server = createApp('http://localhost:3202', mockDb).listen(3201, () => {
         verifyServiceProviderServer = mockVerifyServiceProvider.listen(3202, done)
       })
     })
@@ -150,6 +164,16 @@ describe('Stub RP Application', function () {
     })
 
     it('should show the service page with the user\'s attributes when the user is created', function () {
+      createUserStub.returns({
+        pid: 'some-new-user',
+        id: 2,
+        attributes: {
+          firstName: 'Johnny',
+          middleName: 'Come',
+          surname: 'Lately'
+        }
+      })
+
       return client('http://localhost:3201/verify/start')
       .then(() => client({
         uri: 'http://localhost:3201/verify/response',
@@ -186,7 +210,7 @@ describe('Stub RP Application', function () {
     })
 
     beforeEach((done) => {
-      server = createApp('http://localhost:3202').listen(3201, () => {
+      server = createApp('http://localhost:3202', mockDb).listen(3201, () => {
         verifyServiceProviderServer = mockVerifyServiceProvider.listen(3202, done)
       })
     })
@@ -231,7 +255,7 @@ describe('Stub RP Application', function () {
     })
 
     beforeEach((done) => {
-      server = createApp('http://localhost:3202').listen(3201, () => {
+      server = createApp('http://localhost:3202', mockDb).listen(3201, () => {
         verifyServiceProviderServer = mockVerifyServiceProvider.listen(3202, done)
       })
     })
@@ -276,7 +300,7 @@ describe('Stub RP Application', function () {
     })
 
     beforeEach((done) => {
-      server = createApp('http://localhost:3202').listen(3201, () => {
+      server = createApp('http://localhost:3202', mockDb).listen(3201, () => {
         verifyServiceProviderServer = mockVerifyServiceProvider.listen(3202, done)
       })
     })
