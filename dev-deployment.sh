@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 set -e
-CURRENT_DIR=$PWD
+export CURRENT_DIR=$PWD
 function cleanup {
   cd "$CURRENT_DIR"
-  rm -r "$CURRENT_DIR/work"
+  if [ -d "work" ] ; then
+      rm -r work
+  fi 
 }
 trap cleanup EXIT
 cd "$(dirname "$0")"

@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
+echo $CURRENT_DIR
+
 #check if environment variable is set
 : "${VERIFY_SERVICE_PROVIDER_HOST:?}"
 
