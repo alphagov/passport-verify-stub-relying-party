@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-echo $CURRENT_DIR
-
-#check if environment variable is set
-: "${VERIFY_SERVICE_PROVIDER_HOST:?}"
-
 cd "$(dirname "$0")"
 image_id="$(docker build -q . | cut -d ':' -f 2)"
 container_id="$(docker run -d "$image_id")"
@@ -18,6 +13,6 @@ function cleanup {
 }
 trap cleanup EXIT
 
-docker exec -e "VERIFY_SERVICE_PROVIDER_HOST=${VERIFY_SERVICE_PROVIDER_HOST:?}" "$container_id" /bin/bash -c "npm run build"
+docker exec "$container_id" /bin/bash -c "npm run build"
 
 docker cp "$container_id:/usr/src/app/build" build
