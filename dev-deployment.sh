@@ -43,7 +43,7 @@ cfBindWithDatabase() {
     cf restart $APP_NAME
 }
 
-./docker-pre-commit.sh
+./docker-build.sh
 
 cfLogin
 cfBindWithDatabase
