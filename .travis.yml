@@ -1,14 +1,18 @@
 language: node_js
+
 services:
   - docker
+
 before_install:
-  - docker build . -f db.Dockerfile -t stub-rp-test-db
-  - docker run -d -p15432:5432 stub-rp-test-db
-  
+  - docker --version
+  - docker-compose --version
+
+install:
+    - docker-compose up -d
+
 script:
-  - export DATABASE_CONNECTION_STRING=postgresql://postgres:@localhost:15432/stub_rp_test
-  - npm run test
-  - npm run acceptance-tests
+  - docker exec $(docker ps -aqf "name=app") /bin/bash -c  "npm run pre-commit"
+
 cache:
   directories:
     - "node_modules"
