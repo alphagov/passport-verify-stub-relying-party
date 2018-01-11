@@ -4,14 +4,17 @@ services:
   - docker
 
 before_install:
-  - docker --version
-  - docker-compose --version
+  - echo $(docker --version)
+  - echo $(docker-compose --version)
 
 install:
-    - docker-compose up -d
+  - docker-compose up -d
 
 script:
-  - docker exec $(docker ps -aqf "name=app") /bin/bash -c  "npm run pre-commit"
+  - docker exec app /bin/bash -c  "npm run pre-commit"
+
+after_failure:
+  - docker-compose logs
 
 cache:
   directories:
