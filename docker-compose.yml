@@ -3,7 +3,6 @@ services:
   app:
     build: .
     container_name: app
-    #image: app
     environment:
         - DATABASE_CONNECTION_STRING=postgresql://postgres:@test-db:5432/stub_rp_test
         - VERIFY_SERVICE_PROVIDER_HOST=http://vsp:50400

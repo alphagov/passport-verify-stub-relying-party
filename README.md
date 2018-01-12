@@ -1,18 +1,33 @@
 Passport-verify-stub-relying-party
 ==================================
 
-An application that has been built to demonstrate how a Relying Party can build a service using the 'passport-verify' node package to interact with the Verify Service Provider
+GOV.UK Verify provides a federation of Identity Providers that Government services can use to verify the identity of their users.
 
+This is an application that has been built to demonstrate how a Relying Party (Government Service) can build a web service using node.js, that uses the [Verify Service Provider](...) microservice to communicate with
+GOV.UK Verify's Hub.
+
+The purpose of this demonstration is to show that the complexity of producing and handling the SAML messages has been encapsulated within the Verify Service Provider
+which in turn should make connecting to GOV.UK much simpler, quicker and therefore cheaper.
+
+This node.js application uses the Express framework and the [Passport](https://www.npmjs.com/package/passport) identification middleware.
+
+The GOV.UK Verify team has also built and published an appropriate Passport Strategy [passport-verify](https://www.npmjs.com/package/passport-verify) that simplifies
+with the intention of this being used in conjunction with above as the simplest way to connect to GOV.UK Verify.
+
+Build status
+------------
 [![Build Status](https://travis-ci.org/alphagov/passport-verify-stub-relying-party.svg?branch=master)](https://travis-ci.org/alphagov/passport-verify-stub-relying-party)
 
 Pre-requisites
 --------------
 NodeJs
 
-Docker
+Docker/Java8 JRE (for running an instance of the Verify Service Provider and [Matching Service Adapter](https://alphagov.github.io/rp-onboarding-tech-docs/pages/msa/msaUse.html))
 
-Usage
------
+Please see the appropriate documentation for configuring and deploying the Verify Service Provider and Matching Service Adapter
+
+Installation
+------------
 
 passport-verify-stub-relying-party uses `yarn` to manage dependencies. See https://yarnpkg.com/en/
 
@@ -34,23 +49,12 @@ Otherwise it will use the value of the VERIFY_SERVICE_PROVIDER_HOST environment 
 Testing
 -------
 
-To run the acceptance tests locally we need both the Verify Service Provider, and an instance of Postgres to be running.
-
-The Verify Service Provider has to be started manually and must be configured with an EntityID of `http://verify-service-provider-dev-service`.
-
-A Postgres container is built as part of the pre-commit script.
-
-Run the unit and acceptance tests with:
-
+For the unit tests run:
 ```
-./pre-commit.sh
+npm run test
 ```
 
-Acceptance-tests could be run against PAAS instance of Verify Service Provider however needs an instance of appropriate postgres database running:
-
-```
-npm run acceptance-tests --paas
-```
+To run the full suite of tests, please see the [Acceptance Test documentation](/docs/Running_acceptance_Tests.md)
 
 For development of passport-verify node module
 ----------------------------------------------
