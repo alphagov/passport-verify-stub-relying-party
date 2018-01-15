@@ -7,8 +7,11 @@ docker build . -f vsp.Dockerfile -t vsp
 docker run -d -p50400:50400 --name vsp vsp
 
 echo "start the database container"
-docker build . -f db.Dockerfile -t test-db
+docker build . -f db.Dockerfile -t stub-rp-test-db
 docker run -d -p5432:5432 --name stub-rp-test-db stub-rp-test-db
+
+echo "building"
+yarn install
 
 echo "running tests"
 npm run pre-commit
