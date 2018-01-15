@@ -1,6 +1,11 @@
-FROM node:6.11.3
+FROM node:6.12.2
+
+EXPOSE 3200
 
 WORKDIR /usr/src/app
+
 COPY . /usr/src/app
+
 RUN cd /usr/src/app && yarn && yarn build
-CMD ["sleep","3600"]
+
+CMD ["npm","run","startup"]

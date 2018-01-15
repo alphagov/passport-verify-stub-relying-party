@@ -1,0 +1,21 @@
+version: '3'
+services:
+  app:
+    build: .
+    container_name: app
+    environment:
+        - DATABASE_CONNECTION_STRING=postgresql://postgres:@test-db:5432/stub_rp_test
+        - VERIFY_SERVICE_PROVIDER_HOST=http://vsp:50400
+    command: /bin/bash -c "echo 'app container ready' && sleep 600"
+  test-db:
+    image: postgres
+    volumes:
+        - ./database-schema.sql:/docker-entrypoint-initdb.d/database-schema.sql
+    environment:
+    - POSTGRES_DB=stub_rp_test
+  vsp:
+    env_file:
+        - local-vsp-only.env
+    build:
+        context: .
+        dockerfile: vsp.Dockerfile
