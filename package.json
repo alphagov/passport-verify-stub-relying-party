@@ -15,7 +15,7 @@
     "pre-commit": "if [ $npm_config_paas ]; then export VERIFY_SERVICE_PROVIDER_HOST=https://verify-service-provider-dev.cloudapps.digital; fi; npm run build && npm run lint && ./node_modules/.bin/mocha ./build/test/* && ./node_modules/.bin/mocha ./build/acceptance-tests/*"
   },
   "engines": {
-    "node": "6.11.3"
+    "node": "6.12.2"
   },
   "author": "Verify",
   "license": "MIT",
