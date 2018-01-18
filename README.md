@@ -54,7 +54,7 @@ For the unit tests run:
 npm run test
 ```
 
-To run the full suite of tests, please see the [Acceptance Test documentation](/docs/Running_acceptance_Tests.md)
+To run the full suite of tests, please see the [Acceptance Test documentation](/docs/development/Running_Acceptance_Tests.md)
 
 For development of passport-verify node module
 ----------------------------------------------
