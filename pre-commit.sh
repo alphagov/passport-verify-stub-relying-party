@@ -2,6 +2,15 @@
 set -e
 cd "$(dirname "$0")"
 
+function cleanup {
+	echo "shutdown database and vsp containers container"
+	docker stop vsp
+	docker rm vsp
+	docker stop stub-rp-test-db
+	docker rm stub-rp-test-db
+} 
+trap cleanup EXIT
+
 echo "starting service provider container"
 docker build . -f vsp.Dockerfile -t vsp
 docker run -d -p50400:50400 --name vsp vsp
@@ -15,9 +24,3 @@ yarn install
 
 echo "running tests"
 npm run pre-commit
-
-echo "shutdown database and vsp containers container"
-docker stop vsp
-docker rm vsp
-docker stop stub-rp-test-db
-docker rm stub-rp-test-db
