@@ -5,7 +5,7 @@ Running the end to end acceptance tests requires:
 * the Node.js application
 * a database
 * a [Verify Service Provider (VSP)](https://github.com/alphagov/verify-service-provider)
-* a [Matching Service Adapater (MSA)](http://alphagov.github.io/rp-onboarding-tech-docs/pages/msa/msa.html)
+* a [Matching Service Adapater (MSA)](https://github.com/alphagov/verify-matching-service-adapter)
 * the [Compliance Tool](https://verify-compliance-tool-ui.cloudapps.digital/)
 
 In order to run the tests in a consistent way (locally, on Travis and on Jenkins), we have used Docker to spin up local containers for the Node.js app, database and VSP.
