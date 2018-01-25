@@ -1,18 +1,11 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-cd "$(dirname "$0")"
-image_id="$(docker build -q . | cut -d ':' -f 2)"
-container_id="$(docker run -d "$image_id")"
-
 function cleanup {
-  cd "$CURRENT_DIR"
-  docker kill "$container_id"
-  docker rm "$container_id"
-  docker image rm "$image_id" || :
+  docker-compose down
 }
 trap cleanup EXIT
 
-docker exec "$container_id" /bin/bash -c "npm run build"
+docker-compose up -d --build && docker-compose run app npm run pre-commit
 
-docker cp "$container_id:/usr/src/app/build" build
+docker cp "app:/usr/src/app/build" .

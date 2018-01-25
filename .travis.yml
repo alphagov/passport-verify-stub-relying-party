@@ -8,7 +8,7 @@ before_install:
   - echo $(docker-compose --version)
 
 install:
-  - docker-compose up -d
+  - docker-compose up -d --build
 
 script:
   - docker exec app /bin/bash -c  "npm run pre-commit"
