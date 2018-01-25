@@ -3,12 +3,14 @@ Passport-verify-stub-relying-party
 
 Passport-verify-stub-relying-party is a Node.js application built to demonstrate how a government service connecting to GOV.UK Verify can build a Node.js service that uses the [Verify Service Provider](https://github.com/alphagov/verify-service-provider) to communicate with the Verify Hub. 
 
-This application uses the Express framework and the [Passport](https://www.npmjs.com/package/passport) identification middleware.
+This application uses:
+* [Express framework](https://expressjs.com/) 
+* [Passport.js](https://www.npmjs.com/package/passport) identification middleware
+* [passport-verify](https://github.com/alphagov/passport-verify) package
 
-For more information, refer to:
+For more information about connecting to Verify, refer to:
 
 * [Verify Service Provider](https://github.com/alphagov/verify-service-provider)
-* [Passport.js strategy](https://www.npmjs.com/package/passport-verify)
 * [main technical documentation for connecting to Verify](http://alphagov.github.io/rp-onboarding-tech-docs/index.html)
 
 Build status
