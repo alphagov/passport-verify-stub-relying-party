@@ -6,7 +6,7 @@ Running the end to end acceptance tests requires:
 * a database
 * a [Verify Service Provider (VSP)](https://github.com/alphagov/verify-service-provider)
 * a [Matching Service Adapater (MSA)](https://github.com/alphagov/verify-matching-service-adapter)
-* the [Compliance Tool](https://verify-compliance-tool-ui.cloudapps.digital/)
+* the [Compliance Tool](http://alphagov.github.io/rp-onboarding-tech-docs/pages/saml/samlComplianceTool.html#test-your-service-with-the-saml-compliance-tool)
 
 In order to run the tests in a consistent way (locally, on Travis and on Jenkins), we have used Docker to spin up local containers for the Node.js app, database and VSP.
 
@@ -38,7 +38,7 @@ conflicts with port numbers.  These steps can be run locally.
 
 To start these containers:
 ```
-docker-compose up [-d]
+docker-compose up
 ```
 
 To run the tests (or any npm scripts):

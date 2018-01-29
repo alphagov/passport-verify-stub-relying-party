@@ -41,13 +41,21 @@ Install the dependencies with:
 yarn install
 ```
 
-Start the application with:
+Note: There is a preinstall script that prevents `npm install` from being run.  A consequnce of this is that yarn install cannot be chained with any other npm tasks, meaning `yarn install` cannot be incorporated into an npm script such as `npm build` or `npm startup`.
+
+
+Start the application with defaults:
+------------------------------------
 
 ```
-npm run startup [--paas]
+npm run startup
 ```
 
-Note : use the ```--paas``` flag to run against the verify-service-provider-dev instance on GOV.UK Platform as a Service (PaaS). Otherwise the application will use the value of the VERIFY_SERVICE_PROVIDER_HOST environment variable, defaulting to `http://localhost:50400`.
+This will invoke the following default values for configuration:
+
+* ENTITY_ID: `null`
+* VERIFY_SERVICE_PROVIDER_HOST: `http://localhost:50400`
+* DATABASE_CONNECTION_STRING: `postgesql://localhost:5432/stub_rp_test` (intended for connecting to a local postgres docker container defined by [db.Dockerfile](db.DockerFile)
 
 Testing
 -------
