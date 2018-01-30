@@ -1,18 +1,17 @@
 Passport-verify-stub-relying-party
 ==================================
 
-GOV.UK Verify provides a federation of Identity Providers that Government services can use to verify the identity of their users.
+Passport-verify-stub-relying-party is a Node.js application built to demonstrate how a government service connecting to GOV.UK Verify can build a Node.js service that uses the [Verify Service Provider](https://github.com/alphagov/verify-service-provider) to communicate with the Verify Hub. 
 
-This is an application that has been built to demonstrate how a Relying Party (Government Service) can build a web service using node.js, that uses the [Verify Service Provider](...) microservice to communicate with
-GOV.UK Verify's Hub.
+This application uses:
+* [Express framework](https://expressjs.com/) 
+* [Passport.js](https://www.npmjs.com/package/passport) identification middleware
+* [passport-verify](https://github.com/alphagov/passport-verify) package
 
-The purpose of this demonstration is to show that the complexity of producing and handling the SAML messages has been encapsulated within the Verify Service Provider
-which in turn should make connecting to GOV.UK much simpler, quicker and therefore cheaper.
+For more information about connecting to Verify, refer to:
 
-This node.js application uses the Express framework and the [Passport](https://www.npmjs.com/package/passport) identification middleware.
-
-The GOV.UK Verify team has also built and published an appropriate Passport Strategy [passport-verify](https://www.npmjs.com/package/passport-verify) that simplifies
-with the intention of this being used in conjunction with above as the simplest way to connect to GOV.UK Verify.
+* [Verify Service Provider](https://github.com/alphagov/verify-service-provider)
+* [main technical documentation for connecting to Verify](http://alphagov.github.io/rp-onboarding-tech-docs/index.html)
 
 Build status
 ------------
@@ -20,16 +19,21 @@ Build status
 
 Pre-requisites
 --------------
-NodeJs
+To use Passport-verify-stub-relying-party, you must have:
 
-Docker/Java8 JRE (for running an instance of the Verify Service Provider and [Matching Service Adapter](https://alphagov.github.io/rp-onboarding-tech-docs/pages/msa/msaUse.html))
+* Node.js
+* Docker
+* Java8 JRE 
 
-Please see the appropriate documentation for configuring and deploying the Verify Service Provider and Matching Service Adapter
+You must also configure and deploy:
+
+* [Verify Service Provider](https://github.com/alphagov/verify-service-provider)
+* [Matching Service Adapter](http://alphagov.github.io/rp-onboarding-tech-docs/pages/msa/msa.html)
 
 Installation
 ------------
 
-passport-verify-stub-relying-party uses `yarn` to manage dependencies. See https://yarnpkg.com/en/
+passport-verify-stub-relying-party uses `yarn` to manage dependencies. See the [yarn documentation](https://yarnpkg.com/en/) for more information. 
 
 Install the dependencies with:
 
@@ -37,14 +41,21 @@ Install the dependencies with:
 yarn install
 ```
 
-Start the application with:
+Note: There is a preinstall script that prevents `npm install` from being run.  A consequnce of this is that yarn install cannot be chained with any other npm tasks, meaning `yarn install` cannot be incorporated into an npm script such as `npm build` or `npm startup`.
+
+
+Start the application with defaults:
+------------------------------------
 
 ```
-npm run startup [--paas]
+npm run startup
 ```
 
-Note : use the ```--paas``` flag to run against the verify-service-provider-dev instance on paas.
-Otherwise it will use the value of the VERIFY_SERVICE_PROVIDER_HOST environment variable, defaulting to `http://localhost:50400`.
+This will invoke the following default values for configuration:
+
+* ENTITY_ID: `null`
+* VERIFY_SERVICE_PROVIDER_HOST: `http://localhost:50400`
+* DATABASE_CONNECTION_STRING: `postgesql://localhost:5432/stub_rp_test` (intended for connecting to a local postgres docker container defined by [db.Dockerfile](db.DockerFile)
 
 Testing
 -------
@@ -54,12 +65,11 @@ For the unit tests run:
 npm run test
 ```
 
-To run the full suite of tests, please see the [Acceptance Test documentation](/docs/development/Running_Acceptance_Tests.md)
+To run the full suite of tests, refer to the [acceptance test documentation](/docs/development/Running_Acceptance_Tests.md)
 
 For development of passport-verify node module
 ----------------------------------------------
-In order to run the service using a locally linked copy of 'passport-verify' typescript has a bug that duplicates
-dependencies, to get around this, the following dependencies need to be removed.
+If you want to run the service using a locally linked copy of 'passport-verify', be aware that TypeScript has a bug that duplicates dependencies. To get around this,  remove the following dependencies.
 
 ```
 rm -r node_modules/@types/passport-strategy/
