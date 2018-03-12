@@ -1,4 +1,4 @@
-FROM node:6.12.2
+FROM node:6.12.3
 
 EXPOSE 3200
 
