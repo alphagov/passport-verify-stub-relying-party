@@ -12,10 +12,11 @@
     "startup": "if [ $npm_config_paas ]; then export VERIFY_SERVICE_PROVIDER_HOST=https://verify-service-provider-dev.cloudapps.digital; fi; npm run build && npm run start",
     "test": "npm run build && ./node_modules/.bin/mocha ./build/test/* && npm run lint",
     "acceptance-tests": "if [ $npm_config_paas ]; then export VERIFY_SERVICE_PROVIDER_HOST=https://verify-service-provider-dev.cloudapps.digital; fi; npm run build && ./node_modules/.bin/mocha ./build/acceptance-tests/* && npm run lint",
-    "pre-commit": "if [ $npm_config_paas ]; then export VERIFY_SERVICE_PROVIDER_HOST=https://verify-service-provider-dev.cloudapps.digital; fi; npm run build && npm run lint && ./node_modules/.bin/mocha ./build/test/* && ./node_modules/.bin/mocha ./build/acceptance-tests/*"
+    "pre-commit": "if [ $npm_config_paas ]; then export VERIFY_SERVICE_PROVIDER_HOST=https://verify-service-provider-dev.cloudapps.digital; fi; npm run build && npm run lint && ./node_modules/.bin/mocha ./build/test/* && ./node_modules/.bin/mocha ./build/acceptance-tests/*",
+    "package": "npm run build && npm pack"
   },
   "engines": {
-    "node": "6.12.2"
+    "node": "6.12.3"
   },
   "author": "Verify",
   "license": "MIT",

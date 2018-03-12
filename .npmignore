@@ -1,0 +1,7 @@
+*
+!build/src/*
+!src/assets/css/*
+!src/assets/images/*
+!src/views/*
+!yarn.lock
+!package.json
