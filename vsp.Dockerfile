@@ -1,5 +1,7 @@
 FROM govukverify/java8:latest
 
+ARG GITHUB_TOKEN=""
+
 EXPOSE 50400
 
 COPY local-vsp-only.env /local-vsp-only.env
@@ -7,7 +9,11 @@ COPY local-vsp-only.env /local-vsp-only.env
 RUN apt-get install -y unzip
 RUN apt-get install -y jq
 
-RUN wget -q $(curl -s https://api.github.com/repos/alphagov/verify-service-provider/releases/latest | jq -r '.assets[0].browser_download_url')
+RUN url="$(if [ -z "${GITHUB_TOKEN:-}" ];\
+        then curl -s https://api.github.com/repos/alphagov/verify-service-provider/releases/latest | jq -r '.assets[0].browser_download_url';\
+        else curl -s https://api.github.com/repos/alphagov/verify-service-provider/releases/latest -H "Authorization: token $GITHUB_TOKEN" | jq -r '.assets[0].browser_download_url';\
+        fi)";\
+    wget -q "$url"
 
 RUN unzip -q verify-service-provider*.zip
 
