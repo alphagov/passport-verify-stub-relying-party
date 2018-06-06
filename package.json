@@ -16,7 +16,7 @@
     "package": "npm run build && npm pack"
   },
   "engines": {
-    "node": "6.12.3"
+    "node": "6.14.1"
   },
   "author": "Verify",
   "license": "MIT",
