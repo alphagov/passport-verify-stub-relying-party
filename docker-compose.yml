@@ -18,4 +18,6 @@ services:
         - local-vsp-only.env
     build:
         context: .
+        args:
+          GITHUB_TOKEN: ${GITHUB_TOKEN}
         dockerfile: vsp.Dockerfile
