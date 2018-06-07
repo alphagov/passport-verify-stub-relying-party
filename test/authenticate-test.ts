@@ -43,6 +43,7 @@ describe('Stub RP Application', function () {
       return client('http://localhost:3201/verify/start')
         .then(body => {
           assert.include(body, '<form')
+          assert.include(body, '<!-- This form has been customised -->')
           assert.include(body, 'some-saml')
           assert.include(body, 'http://example.com')
           assert.include(body, 'SAMLRequest')
