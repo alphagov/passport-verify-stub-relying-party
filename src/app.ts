@@ -74,7 +74,7 @@ export function createApp (verifyServiceProviderHost: string, db: DatabaseWrappe
     entityId,
 
     // Saml Form Template Location
-    'saml-form-template.njk'
+    'saml-form-template.njk',
     // This is an optional parameter which can be used to style the saml form
     // used to send the authn request to Verify.
     // This template should only be rendered if Javascript has been disabled in the user's browser.
@@ -82,6 +82,10 @@ export function createApp (verifyServiceProviderHost: string, db: DatabaseWrappe
     // will be provided to the named template for rendering.
     // If this is not provided, passport-verify will render a default auto posting form
     // with the correct attributes.
+
+    // Level of Assurance
+    // LEVEL_1 or LEVEL2 depending on your service's requirements. Defaults to LEVEL_2.
+    'LEVEL_1'
   ))
 
   app.get('/', (req, res) => res.render('index.njk'))
