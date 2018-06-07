@@ -4,8 +4,8 @@ services:
   - docker
 
 before_install:
-  - echo $(docker --version)
-  - echo $(docker-compose --version)
+  - docker --version
+  - docker-compose --version
 
 install:
   - docker-compose up -d --build

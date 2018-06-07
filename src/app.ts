@@ -4,6 +4,7 @@ import * as passport from 'passport'
 import { createStrategy, createResponseHandler, TranslatedResponseBody } from 'passport-verify'
 import * as bodyParser from 'body-parser'
 import * as nunjucks from 'nunjucks'
+import * as path from 'path'
 import { DatabaseWrapper } from './databaseWrapper'
 
 export function createApp (verifyServiceProviderHost: string, db: DatabaseWrapper, entityId?: string) {
@@ -12,7 +13,7 @@ export function createApp (verifyServiceProviderHost: string, db: DatabaseWrappe
 
   nunjucks.configure([
     './src/views',
-    './node_modules/govuk_template_jinja/views'
+    path.resolve(require.resolve('govuk_template_jinja'), '..', '..')
   ], {
     autoescape: true,
     express: app
