@@ -7,20 +7,22 @@ import * as nunjucks from 'nunjucks'
 import * as path from 'path'
 import { DatabaseWrapper } from './databaseWrapper'
 
+const govukTemplateDir = path.resolve(require.resolve('govuk_template_jinja'), '..', '..', '..')
+
 export function createApp (verifyServiceProviderHost: string, db: DatabaseWrapper, entityId?: string) {
   const _passport: any = passport
   const app: express.Application = express()
 
   nunjucks.configure([
     './src/views',
-    path.resolve(require.resolve('govuk_template_jinja'), '..', '..')
+    path.resolve(govukTemplateDir, 'views')
   ], {
     autoescape: true,
     express: app
   }).addGlobal('asset_path', '/')
 
   app.use(express.static('./src/assets'))
-  app.use(express.static('./node_modules/govuk_template_jinja/assets'))
+  app.use(express.static(path.resolve(govukTemplateDir, 'assets')))
 
   app.use(bodyParser.urlencoded({extended: false}))
   app.use(session({
