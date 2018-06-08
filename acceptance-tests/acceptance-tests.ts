@@ -120,17 +120,34 @@ describe('', function () {
             setupComplianceTool('pid')
           })
 
-          beforeEach(() => {
-            return makeAuthnRequest()
-              .then(() => getTestCaseUri(TestCaseId.BASIC_SUCCESSFUL_MATCH_WITH_LOA2))
-              .then(uri => testCaseUri = uri)
+          describe('at level of assurance 1', () => {
+            beforeEach(() => {
+              return makeAuthnRequest()
+                .then(() => getTestCaseUri(TestCaseId.BASIC_SUCCESSFUL_MATCH_WITH_LOA1))
+                .then(uri => testCaseUri = uri)
+            })
+
+            it('handles the response correctly', async () => {
+              await browser.visit(testCaseUri)
+
+              browser.assert.text('h1', 'Success!')
+              browser.assert.text('p', /Test User/)
+            })
           })
 
-          it('handles the response correctly', async () => {
-            await browser.visit(testCaseUri)
+          describe('at level of assurance 2', () => {
+            beforeEach(() => {
+              return makeAuthnRequest()
+                .then(() => getTestCaseUri(TestCaseId.BASIC_SUCCESSFUL_MATCH_WITH_LOA2))
+                .then(uri => testCaseUri = uri)
+            })
 
-            browser.assert.text('h1', 'Success!')
-            browser.assert.text('p', /Test User/)
+            it('handles the response correctly', async () => {
+              await browser.visit(testCaseUri)
+
+              browser.assert.text('h1', 'Success!')
+              browser.assert.text('p', /Test User/)
+            })
           })
         })
 
@@ -227,26 +244,44 @@ describe('', function () {
             setupComplianceTool(latestPid)
           })
 
-          beforeEach(() => {
-            return makeAuthnRequest()
-              .then(() => getTestCaseUri(TestCaseId.ACCOUNT_CREATION_LOA2))
-              .then(uri => testCaseUri = uri)
+          describe('at level of assurance 1', () => {
+            beforeEach(() => {
+              return makeAuthnRequest()
+                .then(() => getTestCaseUri(TestCaseId.ACCOUNT_CREATION_LOA1))
+                .then(uri => testCaseUri = uri)
+            })
+
+            it('inserts the user into the database', async () => {
+              await browser.visit(testCaseUri)
+              const elements = await databaseConnection.manyOrNone(`SELECT * FROM verifiedPid WHERE pid='${latestPid}'`)
+              assert.equal(elements.length, 1)
+            })
+
+            it('goes to the correct page', async () => {
+              await browser.visit(testCaseUri)
+              browser.assert.text('h1', 'Success!')
+              browser.assert.text('p', /Screaming/)
+            })
           })
 
-          it('inserts the user into the database', async () => {
-            await browser.visit(testCaseUri)
+          describe('at level of assurance 2', () => {
+            beforeEach(() => {
+              return makeAuthnRequest()
+                .then(() => getTestCaseUri(TestCaseId.ACCOUNT_CREATION_LOA2))
+                .then(uri => testCaseUri = uri)
+            })
 
-            const elements = await databaseConnection.manyOrNone(`SELECT * FROM verifiedPid WHERE pid='${latestPid}'`)
+            it('inserts the user into the database', async () => {
+              await browser.visit(testCaseUri)
+              const elements = await databaseConnection.manyOrNone(`SELECT * FROM verifiedPid WHERE pid='${latestPid}'`)
+              assert.equal(elements.length, 1)
+            })
 
-            assert.equal(elements.length, 1)
-          })
-
-          it('goes to the correct page', async () => {
-            await browser.visit(testCaseUri)
-
-            browser.assert.text('h1', 'Success!')
-
-            browser.assert.text('p', /Screaming/)
+            it('goes to the correct page', async () => {
+              await browser.visit(testCaseUri)
+              browser.assert.text('h1', 'Success!')
+              browser.assert.text('p', /Screaming/)
+            })
           })
         })
 
