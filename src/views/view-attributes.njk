@@ -15,14 +15,26 @@
         </tr>
     </thead>
     <tbody>
-        {% for name, attribute in user.attributes %}
-            {% if name !== 'address' and name !== 'addressHistory' %}
-                <tr>
-                    <td><code>{{name}}</code></td>
-                    <td><code>{{attribute}}</code></td>
-                </tr>
-            {% endif %}
+        <tr>
+            <td><code>First Name</td>
+            <td><code>{{user.attributes.firstName.value}}</code></td>
+        </tr>
+        {% for attribute in user.attributes.middlenames %}
+          <tr>
+              <td><code>Middle Name</td>
+              <td><code>{{attribute.value}}</code></td>
+          </tr>
         {% endfor %}
+        {% for attribute in user.attributes.surnames %}
+          <tr>
+              <td><code>Surname</td>
+              <td><code>{{attribute.value}}</code></td>
+          </tr>
+        {% endfor %}
+        <tr>
+            <td><code>Date Of Birth</td>
+            <td><code>{{user.attributes.dateOfBirth.value}}</code></td>
+        </tr>
     </tbody>
 </table>
 </p>
@@ -30,7 +42,7 @@
     <h2 class="heading-medium">Current Address</h2>
     <p>
         <table>
-            <thead> 
+            <thead>
                 <th>Attribute Name</th><th>Attribute Value</th>
             </thead>
             {% for addressKey, addressValue in user.attributes.address %}

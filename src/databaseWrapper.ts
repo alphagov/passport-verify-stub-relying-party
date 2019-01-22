@@ -1,4 +1,4 @@
-import { TranslatedResponseBody } from 'passport-verify'
+import { TranslatedResponseBody } from 'passport-verify-non-matching'
 
 const pgp = require('pg-promise')()
 
@@ -24,7 +24,7 @@ export class DatabaseWrapper {
           )
         }
 
-        return this.db.one('SELECT * from person INNER JOIN address ON (person.address = address.address_id) WHERE person_id=$1', data)
+        return this.db.one('SELECT * from person INNER JOIN addresses ON (person.addresses = addresses.addresses_id) WHERE person_id=$1', data)
           .then((data: any) => this.transformFetchedData(pid, data))
       })
       .catch((error: any) => {
@@ -38,12 +38,12 @@ export class DatabaseWrapper {
   public async createUser (data: TranslatedResponseBody): Promise<object> {
     return this.db.none(
         'WITH newAddress AS (' +
-        'INSERT INTO address (lines, postcode) ' +
-        'VALUES (${attributes.address.lines}, ${attributes.address.postcode}) ' +
-        'RETURNING address_id), newPerson AS (' +
-        'INSERT INTO person (first_name, middle_name, surname, date_of_birth, address) ' +
-        'VALUES (${attributes.firstName}, ${attributes.middleName}, ${attributes.surname}, ' +
-        '${attributes.dateOfBirth}, (SELECT address_id FROM newAddress)) RETURNING person_id)' +
+        'INSERT INTO addresses (lines, postcode) ' +
+        'VALUES (${attributes.addresses.lines}, ${attributes.addresses.postcode}) ' +
+        'RETURNING addresses_id), newPerson AS (' +
+        'INSERT INTO person (first_name, middle_name, surnames, date_of_birth, addresses) ' +
+        'VALUES (${attributes.firstName}, ${attributes.middleNames}, ${attributes.surnames}, ' +
+        '${attributes.dateOfBirth}, (SELECT addresses_id FROM newAddress)) RETURNING person_id)' +
         'INSERT INTO verifiedPid (pid, person) VALUES (${pid}, (SELECT person_id FROM newPerson));',
        this.createDatabaseInsertObject(data)
       ).then(() => {
@@ -62,11 +62,11 @@ export class DatabaseWrapper {
       id: data.person_id,
       attributes: {
         firstName: data.first_name,
-        middleName: data.middle_name,
-        surname: data.surname,
+        middleNames: data.middle_name,
+        surnames: data.surnames,
         dateOfBirth: data.date_of_birth,
-        address: {
-          id: data.address_id,
+        addresses: {
+          id: data.addresses_id,
           lines: data.lines.split(','),
           city: data.city,
           country: data.country,
@@ -84,14 +84,7 @@ export class DatabaseWrapper {
     return {
       pid: data.pid,
       attributes: {
-        firstName: data.attributes.firstName ? data.attributes.firstName.value : null,
-        middleName: data.attributes.middleName ? data.attributes.middleName.value : null,
-        surname: data.attributes.surname ? data.attributes.surname.value : null,
-        dateOfBirth: data.attributes.dateOfBirth ? data.attributes.dateOfBirth.value : null,
-        address: {
-          lines: data.attributes.address && data.attributes.address.value && data.attributes.address.value.lines ? data.attributes.address.value.lines.join(',') : null,
-          postcode: data.attributes.address && data.attributes.address.value && data.attributes.address.value.postCode ? data.attributes.address.value.postCode : null
-        }
+        firstName: data.attributes.firstName ? data.attributes.firstName.value : null
       }
     }
   }
