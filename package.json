@@ -48,6 +48,7 @@
     "@types/request": "0.0.44",
     "@types/request-promise-native": "^1.0.6",
     "@types/serve-static": "^1.7.31",
+    "@types/passport-strategy": "^0.2.30",
     "@types/sinon": "^4.1.2",
     "chai": "^4.0.2",
     "mocha": "^3.4.2",
