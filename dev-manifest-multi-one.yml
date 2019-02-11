@@ -2,7 +2,7 @@ memory: 256M
 applications:
   - name: passport-verify-stub-relying-party-multi-one
     buildpack: nodejs_buildpack
-    path: .
+    command: yarn start
     env:
       VERIFY_SERVICE_PROVIDER_HOST: https://verify-service-provider-dev-multi.cloudapps.digital
       ENTITY_ID: http://passport-verify-stub-relying-party-one
