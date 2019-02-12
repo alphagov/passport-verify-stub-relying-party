@@ -1,0 +1,71 @@
+{% extends "layouts/govuk_template.html" %}
+
+{% block head %}
+<link href="css/app.css" media="screen" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<main id="content">
+<h2 class="heading-medium">Attributes for user with pid: {{identity.pid}} (LOA: {{identity.levelOfAssurance}})</h2>
+<p>
+<table>
+    <thead>
+        <tr>
+            <th>Attribute Name</th><th>Attribute Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for name, attribute in identity.attributes %}
+            {% if name !== 'address' and name !== 'addressHistory' %}
+                <tr>
+                    <td><code>{{name}}</code></td>
+                    <td><code>{{attribute.value}}</code></td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </tbody>
+</table>
+</p>
+{% if identity.attributes.address %}
+    <h2 class="heading-medium">Current Address</h2>
+    <p>
+        <table>
+            <thead> 
+                <th>Attribute Name</th><th>Attribute Value</th>
+            </thead>
+            {% for addressKey, addressValue in identity.attributes.address %}
+
+                <tbody>
+                    <tr>
+                        <td><code>{{addressKey}}</code></td>
+                        <td><code>{{addressValue}}</code></td>
+                    </tr>
+                </tbody>
+            {% endfor %}
+        </table>
+    </p>
+{% endif %}
+{% if identity.attributes.addressHistory %}
+    <h2 class="heading-medium">Address History</h2>
+    {% for address in identity.attributes.addressHistory %}
+        <h2 class="heading-medium">Address {{loop.index}}</h2>
+        <p>
+            <table>
+                <thead>
+                    <th>Attribute Name</th><th>Attribute Value</th>
+                </thead>
+                {% for addressKey, addressValue in address %}
+                    <tbody>
+                        <tr>
+                            <td><code>{{addressKey}}</code></td>
+                        <td><code>{{addressValue}}</code></td>
+                        </tr>
+                    </tbody>
+                {% endfor %}
+            </table>
+        <p>
+    {% endfor %}
+{% endif %}
+</main>
+{% endblock %}
+

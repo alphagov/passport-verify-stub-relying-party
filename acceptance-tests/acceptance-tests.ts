@@ -1,10 +1,9 @@
 const Browser = require('zombie')
 const pgp = require('pg-promise')()
 import { Server } from 'http'
-import { createApp } from './../src/app'
+import { createMatchingApp } from './../src/app'
 import * as request from 'request-promise-native'
 import { assert } from 'chai'
-import { parse as parseUrl } from 'url'
 import { DatabaseWrapper } from '../src/databaseWrapper'
 
 const TestCaseId = {
@@ -86,7 +85,7 @@ describe('', function () {
         let testPort: number
 
         before(done => {
-          server = entityId ? createApp(VERIFY_SERVICE_PROVIDER_HOST, db, entityId).listen(3200, done) : createApp(VERIFY_SERVICE_PROVIDER_HOST, db).listen(3200, done)
+          server = entityId ? createMatchingApp(VERIFY_SERVICE_PROVIDER_HOST, db, entityId).listen(3200, done) : createMatchingApp(VERIFY_SERVICE_PROVIDER_HOST, db).listen(3200, done)
           testPort = server.address().port
         })
 
