@@ -1,7 +1,7 @@
 import * as express from 'express'
 import * as session from 'express-session'
 import * as passport from 'passport'
-import { createStrategy, createResponseHandler, TranslatedResponseBody } from 'passport-verify'
+import { createStrategy, createResponseHandler, TranslatedMatchingResponseBody } from 'passport-verify'
 import * as bodyParser from 'body-parser'
 import * as nunjucks from 'nunjucks'
 import * as path from 'path'
@@ -141,13 +141,13 @@ export function createApp (verifyServiceProviderHost: string, db: DatabaseWrappe
     renderErrorPage(res, err)
   })
 
-  async function createUser (responseBody: TranslatedResponseBody) {
+  async function createUser (responseBody: TranslatedMatchingResponseBody) {
     let user = await db.createUser(responseBody)
 
     return Object.assign({ levelOfAssurance: responseBody.levelOfAssurance }, user)
   }
 
-  async function verifyUser (responseBody: TranslatedResponseBody) {
+  async function verifyUser (responseBody: TranslatedMatchingResponseBody) {
     let user = await db.fetchVerifiedUser(responseBody.pid)
 
     return Object.assign({ levelOfAssurance: responseBody.levelOfAssurance }, user)

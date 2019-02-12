@@ -1,4 +1,4 @@
-import { TranslatedResponseBody } from 'passport-verify'
+import { TranslatedMatchingResponseBody } from 'passport-verify'
 
 const pgp = require('pg-promise')()
 
@@ -35,7 +35,7 @@ export class DatabaseWrapper {
       })
   }
 
-  public async createUser (data: TranslatedResponseBody): Promise<object> {
+  public async createUser (data: TranslatedMatchingResponseBody): Promise<object> {
     return this.db.none(
         'WITH newAddress AS (' +
         'INSERT INTO address (lines, postcode) ' +
@@ -76,7 +76,7 @@ export class DatabaseWrapper {
     }
   }
 
-  private createDatabaseInsertObject (data: TranslatedResponseBody): object {
+  private createDatabaseInsertObject (data: TranslatedMatchingResponseBody): object {
     if (data.attributes === undefined) {
       throw new Error(`An error occured - Attempting to do user account creation with no attributes present`)
     }
