@@ -1,4 +1,6 @@
 import { TranslatedMatchingResponseBody } from 'passport-verify'
+import * as Debug from 'debug'
+const debug = Debug('passport-verify-stub-db-wrapper')
 
 const pgp = require('pg-promise')()
 
@@ -10,14 +12,20 @@ export class DatabaseWrapper {
   }
 
   public static getDatabaseWrapper (connectionString: string): DatabaseWrapper {
+    debug(connectionString)
     const connection = pgp(connectionString)
     return new DatabaseWrapper(connection)
   }
 
   public async fetchVerifiedUser (pid: string): Promise<object> {
+    debug(`fetchingVerifiedUser: ${pid}`)
     return this.db.one('SELECT person FROM verifiedPid WHERE pid=$1', pid, (result: any) => result && result.person)
       .then((data: any) => {
         if (data === null) {
+          debug (
+            `An error occured while attempting to retrieve user with pid ${pid} from the database:
+            The local matching service returned a match, but the pid could not be found in the database.`
+          )
           throw new Error(
             `An error occured while attempting to retrieve user with pid ${pid} from the database:
             The local matching service returned a match, but the pid could not be found in the database.`
@@ -28,6 +36,10 @@ export class DatabaseWrapper {
           .then((data: any) => this.transformFetchedData(pid, data))
       })
       .catch((error: any) => {
+        debug(
+          `An error occured while attempting to retrieve user with pid ${pid} from the database:
+            ${error}`
+        )
         throw new Error (
             `An error occured while attempting to retrieve user with pid ${pid} from the database:
             ${error}`
