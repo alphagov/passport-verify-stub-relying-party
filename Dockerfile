@@ -1,4 +1,4 @@
-FROM node:6.14.1
+FROM node:10.15.1-slim
 
 EXPOSE 3200
 
