@@ -1,10 +1,9 @@
 const Browser = require('zombie')
 const pgp = require('pg-promise')()
 import { Server } from 'http'
-import { createApp } from './../src/app'
+import { createMatchingApp } from './../src/app'
 import * as request from 'request-promise-native'
 import { assert } from 'chai'
-import { parse as parseUrl } from 'url'
 import { DatabaseWrapper } from '../src/databaseWrapper'
 
 const TestCaseId = {
@@ -19,10 +18,10 @@ const TestCaseId = {
   BASIC_SUCCESSFUL_MATCH_WITH_ASSERTIONS_SIGNED_BY_HUB: 9
 }
 
-let VERIFY_SERVICE_PROVIDER_HOST = process.env['VERIFY_SERVICE_PROVIDER_HOST']
-if (!VERIFY_SERVICE_PROVIDER_HOST) {
+let DEFAULT_VERIFY_SERVICE_PROVIDER_HOST = 'http://localhost:50400'
+let VERIFY_SERVICE_PROVIDER_HOST = process.env['VERIFY_SERVICE_PROVIDER_HOST'] || DEFAULT_VERIFY_SERVICE_PROVIDER_HOST
+if (!process.env['VERIFY_SERVICE_PROVIDER_HOST']) {
   console.log('Warning: VERIFY_SERVICE_PROVIDER_HOST not set, using localhost:50400 by default. Use the --paas flag to run against the service provider on paas.')
-  VERIFY_SERVICE_PROVIDER_HOST = 'http://localhost:50400'
 }
 const COMPLIANCE_TOOL_HOST = 'https://compliance-tool-reference.ida.digital.cabinet-office.gov.uk'
 
@@ -86,7 +85,7 @@ describe('', function () {
         let testPort: number
 
         before(done => {
-          server = entityId ? createApp(VERIFY_SERVICE_PROVIDER_HOST, db, entityId).listen(3200, done) : createApp(VERIFY_SERVICE_PROVIDER_HOST, db).listen(3200, done)
+          server = entityId ? createMatchingApp(VERIFY_SERVICE_PROVIDER_HOST, db, entityId).listen(3200, done) : createMatchingApp(VERIFY_SERVICE_PROVIDER_HOST, db).listen(3200, done)
           testPort = server.address().port
         })
 

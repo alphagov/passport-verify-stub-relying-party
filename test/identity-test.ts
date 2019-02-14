@@ -1,26 +1,22 @@
 import { assert } from 'chai'
 import { stub } from 'sinon'
 import * as request from 'request-promise-native'
-import { createMatchingApp } from '../src/app'
+import { createIdentityApp } from '../src/app'
 import * as http from 'http'
 import * as express from 'express'
 import * as bodyParser from 'body-parser'
 import { Scenario } from 'passport-verify'
-import { DatabaseWrapper } from '../src/databaseWrapper'
 
-describe('Stub RP Application', function () {
+describe('Stub RP Application in a non-matching mode', function () {
   let server: http.Server
   let verifyServiceProviderServer: http.Server
   let mockVerifyServiceProvider: express.Application
   const client = request.defaults({ jar: true, simple: false, followAllRedirects: true })
-  const fetchVerifiedUserStub = stub()
-  const createUserStub = stub()
-  const mockDb: DatabaseWrapper = { fetchVerifiedUser: fetchVerifiedUserStub, createUser: createUserStub } as any
 
-  describe('when an existing user logs in', () => {
+  describe('when a response is received from VSP', () => {
 
     beforeEach((done) => {
-      server = createMatchingApp('http://localhost:3202', mockDb).listen(3201, () => {
+      server = createIdentityApp('http://localhost:3202').listen(3201, () => {
         mockVerifyServiceProvider = express()
         verifyServiceProviderServer = mockVerifyServiceProvider.listen(3202, done)
       })
@@ -49,36 +45,6 @@ describe('Stub RP Application', function () {
           assert.include(body, 'SAMLRequest')
           assert.include(body, 'relayState')
         })
-    })
-
-    it('should show the service page when user is authenticated', function () {
-      fetchVerifiedUserStub.returns({
-        pid: 'billy',
-        id: 1,
-        attributes: {
-          firstName: 'Billy',
-          surname: 'Batson'
-        }
-      })
-
-      mockVerifyServiceProvider.post('/translate-response', (req, res, next) => {
-        res.header('content-type', 'application/json').send({
-          pid: 'billy',
-          scenario: Scenario.SUCCESS_MATCH,
-          levelOfAssurance: 'LEVEL_1',
-          attributes: null
-        })
-      })
-      return client({
-        uri: 'http://localhost:3201/verify/response',
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'SAMLResponse=some-saml-response'
-      })
-      .then(body => {
-        assert.include(body, 'You have successfully logged in as <em>Billy Batson</em>')
-        assert.include(body, 'level of assurance LEVEL_1')
-      })
     })
 
     it('should show an authentication failed page when user could not be authenticated', function () {
@@ -118,7 +84,7 @@ describe('Stub RP Application', function () {
     })
   })
 
-  describe('when a new user logs in', () => {
+  describe('when an identity is received', () => {
     const requestId = '0f44aa97-fde9-49d1-b884-b7a449e46e7b'
     const mockVerifyServiceProvider = express()
     mockVerifyServiceProvider.use(bodyParser.json())
@@ -132,7 +98,7 @@ describe('Stub RP Application', function () {
     mockVerifyServiceProvider.post('/translate-response', (req, res, next) => {
       assert.equal(req.body.requestId, requestId)
       res.send({
-        scenario: Scenario.ACCOUNT_CREATION,
+        scenario: Scenario.IDENTITY_VERIFIED,
         pid: 'some-new-user',
         levelOfAssurance: 'LEVEL_2',
         attributes: {
@@ -140,20 +106,20 @@ describe('Stub RP Application', function () {
             value: 'Johnny',
             verified: false
           },
-          middleName: {
+          middleNames: [{
             value: 'Come',
             verified: false
-          },
-          surname: {
+          }],
+          surnames: [{
             value: 'Lately',
             verified: false
-          }
+          }]
         }
       })
     })
 
     beforeEach((done) => {
-      server = createMatchingApp('http://localhost:3202', mockDb).listen(3201, () => {
+      server = createIdentityApp('http://localhost:3202').listen(3201, () => {
         verifyServiceProviderServer = mockVerifyServiceProvider.listen(3202, done)
       })
     })
@@ -164,16 +130,7 @@ describe('Stub RP Application', function () {
       })
     })
 
-    it('should show the service page with the user\'s attributes when the user is created', function () {
-      createUserStub.returns({
-        pid: 'some-new-user',
-        id: 2,
-        attributes: {
-          firstName: 'Johnny',
-          middleName: 'Come',
-          surname: 'Lately'
-        }
-      })
+    it('should show a page with the identity\'s attributes', function () {
 
       return client('http://localhost:3201/verify/start')
       .then(() => client({
@@ -183,56 +140,8 @@ describe('Stub RP Application', function () {
         body: 'SAMLResponse=some-saml-response'
       }))
       .then(body => {
-        assert.include(body, 'You have successfully logged in as <em>Johnny Lately</em>')
-        assert.include(body, 'level of assurance LEVEL_2')
-      })
-    })
-  })
-
-  describe(`when a user can't be matched`, () => {
-    const requestId = '0f44aa97-fde9-49d1-b884-b7a449e46e7b'
-    const mockVerifyServiceProvider = express()
-    mockVerifyServiceProvider.use(bodyParser.json())
-    mockVerifyServiceProvider.post('/generate-request', (req, res, next) => {
-      res.send({
-        samlRequest: 'some-saml',
-        requestId: requestId,
-        ssoLocation: 'http://example.com'
-      })
-    })
-    mockVerifyServiceProvider.post('/translate-response', (req, res, next) => {
-      assert.equal(req.body.requestId, requestId)
-      res.send({
-        scenario: Scenario.NO_MATCH,
-        pid: '',
-        levelOfAssurance: '',
-        attributes: {}
-      })
-    })
-
-    beforeEach((done) => {
-      server = createMatchingApp('http://localhost:3202', mockDb).listen(3201, () => {
-        verifyServiceProviderServer = mockVerifyServiceProvider.listen(3202, done)
-      })
-    })
-
-    afterEach((done) => {
-      server.close(() => {
-        verifyServiceProviderServer.close(done)
-      })
-    })
-
-    it('should show the no match page', function () {
-      return client('http://localhost:3201/verify/start')
-      .then(() => client({
-        uri: 'http://localhost:3201/verify/response',
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'SAMLResponse=some-saml-response'
-      }))
-      .then(body => {
-        assert.include(body, 'Authentication failed!', body)
-        assert.include(body, 'we could not match your identity in our database', body)
+        assert.include(body, 'Lately')
+        assert.include(body, 'LEVEL_2')
       })
     })
   })
@@ -256,7 +165,7 @@ describe('Stub RP Application', function () {
     })
 
     beforeEach((done) => {
-      server = createMatchingApp('http://localhost:3202', mockDb).listen(3201, () => {
+      server = createIdentityApp('http://localhost:3202').listen(3201, () => {
         verifyServiceProviderServer = mockVerifyServiceProvider.listen(3202, done)
       })
     })
@@ -301,7 +210,7 @@ describe('Stub RP Application', function () {
     })
 
     beforeEach((done) => {
-      server = createMatchingApp('http://localhost:3202', mockDb).listen(3201, () => {
+      server = createIdentityApp('http://localhost:3202').listen(3201, () => {
         verifyServiceProviderServer = mockVerifyServiceProvider.listen(3202, done)
       })
     })

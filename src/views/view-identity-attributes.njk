@@ -1,0 +1,78 @@
+{% extends "layouts/govuk_template.html" %}
+
+{% block head %}
+<link href="css/app.css" media="screen" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<main id="content">
+<h2 class="heading-medium">Attributes for user with pid: {{identity.pid}} (LOA: {{identity.levelOfAssurance}})</h2>
+<p>
+<table>
+    <thead>
+        <tr>
+            <th>Attribute Name</th><th>Attribute Value</th><th>Attribute Verified</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>First Name</td>
+            <td><code>{{identity.attributes.firstName.value}}</code></td>
+            <td><code>{{identity.attributes.firstName.verified}}</code></td>
+        </tr>
+        {% for attribute in identity.attributes.middlenames %}
+          <tr>
+              <td><code>Middle Name</td>
+              <td><code>{{attribute.value}}</code></td>
+              <td><code>{{attribute.verified}}</code></td>
+          </tr>
+        {% endfor %}
+        {% for attribute in identity.attributes.surnames %}
+          <tr>
+              <td><code>Surname</td>
+              <td><code>{{attribute.value}}</code></td>
+              <td><code>{{attribute.verified}}</code></td>
+          </tr>
+        {% endfor %}
+        <tr>
+            <td><code>Date Of Birth</td>
+            <td><code>{{identity.attributes.dateOfBirth.value}}</code></td>
+            <td><code>{{identity.attributes.dateOfBirth.verified}}</code></td>
+        </tr>
+    </tbody>
+</table>
+</p>
+{% if identity.attributes.addresses %}
+    <h2 class="heading-medium">Addresses</h2>
+    <p>
+        <table style="border-collapse: collapse;">
+            <thead> 
+                <th>Attribute Name</th><th>Attribute Value</th>
+            </thead>
+            <tbody>
+            {% for address in identity.attributes.addresses %}
+                {% for addressKey, addressValue in address %}
+                    {% if addressKey == 'value' %}
+                        {% for addressDataKey, addressDataValue in addressValue %}
+                            <tr>
+                                <td/>
+                                <td><code>{{addressDataKey}}</code></td>
+                                <td><code>{{addressDataValue}}</code></td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td><code>{{addressKey}}</code></td>
+                            <td><code>{{addressValue}}</code></td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                <tr style="border-top: 1px solid black; height: 5px;"><td>&nbsp;</td></tr>
+            {% endfor %}
+            <tbody>
+        </table>
+    </p>
+{% endif %}
+</main>
+{% endblock %}
+
