@@ -1,0 +1,7 @@
+applications:
+  - name: ((app))
+    memory: 512M
+    services:
+      - ((database))
+    buildpack: nodejs_buildpack
+    command: yarn start

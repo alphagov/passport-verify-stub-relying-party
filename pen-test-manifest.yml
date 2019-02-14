@@ -1,6 +1,0 @@
-memory: 256M
-applications:
-  - name: passport-verify-stub-relying-party-pentest
-    path: .
-    env:
-      VERIFY_SERVICE_PROVIDER_HOST: https://verify-service-provider-pentest.cloudapps.digital
