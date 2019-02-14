@@ -106,14 +106,14 @@ describe('Stub RP Application in a non-matching mode', function () {
             value: 'Johnny',
             verified: false
           },
-          middleName: {
+          middleNames: [{
             value: 'Come',
             verified: false
-          },
-          surname: {
+          }],
+          surnames: [{
             value: 'Lately',
             verified: false
-          }
+          }]
         }
       })
     })
