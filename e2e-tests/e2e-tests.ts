@@ -6,12 +6,11 @@ let page
 let host = process.env.E2E_TEST_ENVIRONMENT
 
 before(async () => {
-  browser = await puppeteer.launch()
+  const browser = await puppeteer.launch({
+    executablePath: '/usr/bin/chromium-browser',
+    args: ['--no-sandbox', '--headless', '--disable-gpu', '--disable-dev-shm-usage']
+  })
   page = await browser.newPage()
-})
-
-after(async () => {
-  await browser.close()
 })
 
 function delay (timeout) {
