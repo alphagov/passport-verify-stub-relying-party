@@ -20,30 +20,40 @@ function delay (timeout) {
   })
 }
 
-describe('A full non-matching journey', () => {
+describe('A non-matching journey', () => {
   it('should succeed', async () => {
-    await page.goto(host, { waitUntil: 'networkidle2' })
-    await page.click('a.button-start')
-    await page.waitForSelector('input#start_form_selection_false')
-    await page.click('input#start_form_selection_false')
-    await page.click('input#next-button')
-    await page.waitForSelector("button[value='Stub Idp Demo One']")
-    await page.click("button[value='Stub Idp Demo One']")
-    await page.waitForSelector('input#username')
-    await page.type('input#username', 'stub-idp-demo-one')
-    await page.type('input#password', 'bar')
-    await page.click('input#login')
-    await page.waitForSelector('input#agree')
-    await page.click('input#agree')
-    // Due to multiple redirects at this stage we need to delay
-    await delay(1500)
-    const heading = await page.$eval('h2#heading-non-matching', e => e.innerHTML)
-    assert(heading.includes('Attributes for user with pid:'))
+    await journey().then(async function () {
+      const heading = await page.$eval('h2#heading-non-matching', e => e.innerHTML)
+      assert(heading.includes('Attributes for user with pid:'),'Actual: ' + heading)
+    })
   }).timeout(10000)
 })
 
-describe('A full matching journey', () => {
+describe('A matching journey', () => {
   it('should succeed', async () => {
-    // TODO: once we deploy the compoments in a matching mode
-  }).timeout(10000)
+    await journey(true).then(async function () {
+      // matching/user creation happening
+      await delay(2000)
+      const heading = await page.$eval('h1', e => e.innerHTML)
+      assert(heading.includes('Success'), 'Actual: ' + heading)
+    })
+  }).timeout(12000)
 })
+
+async function journey (matchUser?: boolean) {
+  await page.goto(host, { waitUntil: 'networkidle2' })
+  await page.click('a.button-start')
+  await page.waitForSelector('input#start_form_selection_false')
+  await page.click('input#start_form_selection_false')
+  await page.click('input#next-button')
+  await page.waitForSelector("button[value='Stub Idp Demo One']")
+  await page.click("button[value='Stub Idp Demo One']")
+  await page.waitForSelector('input#username')
+  await page.type('input#username', `stub-idp-demo-one${matchUser ? '-elms' : ''}`)
+  await page.type('input#password', 'bar')
+  await page.click('input#login')
+  await page.waitForSelector('input#agree')
+  await page.click('input#agree')
+  // Due to multiple redirects at this stage we need to delay
+  await delay(1500)
+}
