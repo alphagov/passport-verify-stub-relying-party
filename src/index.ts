@@ -6,7 +6,7 @@ const databaseConnectionString = process.env.DATABASE_CONNECTION_STRING || 'post
 const serviceEntityId = process.env.ENTITY_ID
 const matching = process.env.MATCHING || false
 
-if (matching) {
+if (matching === 'true') {
   console.log(`Starting the app in a matching mode`)
   const server = createMatchingApp(verifyServiceProviderHost, DatabaseWrapper.getDatabaseWrapper(databaseConnectionString), serviceEntityId).listen(process.env.PORT || 3200, function () {
     console.log(`Entity Id set to ${serviceEntityId !== undefined ? serviceEntityId : 'null (will use verify service provider default)'}`)
