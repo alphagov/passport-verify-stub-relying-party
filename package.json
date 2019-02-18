@@ -12,6 +12,7 @@
     "startup": "if [ $npm_config_paas ]; then export VERIFY_SERVICE_PROVIDER_HOST=https://verify-service-provider-dev.cloudapps.digital; fi; npm run build && npm run start",
     "test": "npm run build && ./node_modules/.bin/mocha ./build/test/* && npm run lint",
     "acceptance-tests": "if [ $npm_config_paas ]; then export VERIFY_SERVICE_PROVIDER_HOST=https://verify-service-provider-dev.cloudapps.digital; fi; npm run build && ./node_modules/.bin/mocha ./build/acceptance-tests/* && npm run lint",
+    "e2e-tests": "npm run build && ./node_modules/.bin/mocha ./build/e2e-tests/*",
     "pre-commit": "if [ $npm_config_paas ]; then export VERIFY_SERVICE_PROVIDER_HOST=https://verify-service-provider-dev.cloudapps.digital; fi; npm run build && npm run lint && ./node_modules/.bin/mocha ./build/test/* && ./node_modules/.bin/mocha ./build/acceptance-tests/*",
     "package": "npm run build && npm pack"
   },
@@ -29,9 +30,10 @@
     "passport": "^0.3.2",
     "passport-verify": "2.0.0-rc.1",
     "pg-promise": "^7.3.2",
+    "puppeteer": "^1.12.2",
     "request": "^2.81.0",
     "request-promise-native": "^1.0.4",
-    "zombie": "^5.0.7"
+    "zombie": "^6.1.4"
   },
   "devDependencies": {
     "@types/body-parser": "^1.16.3",
