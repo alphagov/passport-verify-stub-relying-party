@@ -3,7 +3,7 @@ const puppeteer = require('puppeteer')
 
 let browser
 let page
-let host = `https://passport-verify-stub-relying-party-${process.env.E2E_TEST_ENVIRONMENT || 'integration'}.cloudapps.digital/`
+let host = process.env.E2E_TEST_ENVIRONMENT
 
 before(async () => {
   browser = await puppeteer.launch()
