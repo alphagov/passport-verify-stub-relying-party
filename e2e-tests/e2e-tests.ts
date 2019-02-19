@@ -33,7 +33,7 @@ describe('A non-matching journey', () => {
       const heading = await page.$eval('h2#heading-non-matching', e => e.innerHTML)
       assert(heading.includes('Attributes for user with pid:'),'Actual: ' + heading)
     })
-  }).timeout(10000)
+  }).timeout(20000)
 })
 
 describe('A matching journey', () => {
@@ -44,7 +44,7 @@ describe('A matching journey', () => {
       const heading = await page.$eval('h1', e => e.innerHTML)
       assert(heading.includes('Success'), 'Actual: ' + heading)
     })
-  }).timeout(12000)
+  }).timeout(30000)
 })
 
 async function journey (matchUser?: boolean) {
