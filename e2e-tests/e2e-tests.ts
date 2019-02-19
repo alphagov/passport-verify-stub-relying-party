@@ -5,13 +5,20 @@ let browser
 let page
 let host = process.env.E2E_TEST_ENVIRONMENT
 
-before(async () => {
-  browser = await puppeteer.launch()
-  page = await browser.newPage()
-})
+function browserOptions () {
+  if (process.env.PUPPETEER_INSIDE_CONTAINER) {
+    return {
+      executablePath: '/usr/bin/chromium-browser',
+      args: ['--no-sandbox', '--headless', '--disable-gpu', '--disable-dev-shm-usage']
+    }
+  } else {
+    return {}
+  }
+}
 
-after(async () => {
-  await browser.close()
+before(async () => {
+  const browser = await puppeteer.launch(browserOptions())
+  page = await browser.newPage()
 })
 
 function delay (timeout) {
@@ -26,7 +33,7 @@ describe('A non-matching journey', () => {
       const heading = await page.$eval('h2#heading-non-matching', e => e.innerHTML)
       assert(heading.includes('Attributes for user with pid:'),'Actual: ' + heading)
     })
-  }).timeout(10000)
+  }).timeout(20000)
 })
 
 describe('A matching journey', () => {
@@ -37,7 +44,7 @@ describe('A matching journey', () => {
       const heading = await page.$eval('h1', e => e.innerHTML)
       assert(heading.includes('Success'), 'Actual: ' + heading)
     })
-  }).timeout(12000)
+  }).timeout(30000)
 })
 
 async function journey (matchUser?: boolean) {
