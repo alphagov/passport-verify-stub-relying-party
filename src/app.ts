@@ -127,7 +127,7 @@ export function createIdentityApp (verifyServiceProviderHost: string, entityId?:
 
     // Level of Assurance
     // LEVEL_1 or LEVEL2 depending on your service's requirements. Defaults to LEVEL_2.
-    'LEVEL_1'
+    'LEVEL_2'
   ))
 
   async function handleIdentity (responseBody: TranslatedIdentityResponseBody) {
