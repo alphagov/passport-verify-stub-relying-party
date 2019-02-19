@@ -40,7 +40,7 @@ describe('A matching journey', () => {
   it('should succeed', async () => {
     await journey(true).then(async function () {
       // matching/user creation happening
-      await delay(2000)
+      await delay(4000)
       const heading = await page.$eval('h1', e => e.innerHTML)
       assert(heading.includes('Success'), 'Actual: ' + heading)
     })
