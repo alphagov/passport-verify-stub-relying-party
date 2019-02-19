@@ -5,11 +5,19 @@ let browser
 let page
 let host = process.env.E2E_TEST_ENVIRONMENT
 
+function browserOptions () {
+  if (process.env.PUPPETEER_INSIDE_CONTAINER) {
+    return {
+      executablePath: '/usr/bin/chromium-browser',
+      args: ['--no-sandbox', '--headless', '--disable-gpu', '--disable-dev-shm-usage']
+    }
+  } else {
+    return {}
+  }
+}
+
 before(async () => {
-  const browser = await puppeteer.launch({
-    executablePath: '/usr/bin/chromium-browser',
-    args: ['--no-sandbox', '--headless', '--disable-gpu', '--disable-dev-shm-usage']
-  })
+  const browser = await puppeteer.launch(browserOptions())
   page = await browser.newPage()
 })
 
