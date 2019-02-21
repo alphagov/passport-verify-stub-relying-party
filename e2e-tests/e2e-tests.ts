@@ -28,18 +28,22 @@ function delay (timeout) {
 }
 
 describe('A non-matching journey', () => {
-  it('without eIDAS should succeed', async () => {
-    await eidasEnabledJourney(false).then(async function () {
-      const heading = await page.$eval('h2#heading-non-matching', e => e.innerHTML)
-      assert(heading.includes('Attributes for user with pid:'),'Actual: ' + heading)
-    })
-  }).timeout(10000)
+  describe('when eIDAS is not selected', () => {
+    it('should succeed', async () => {
+      await eidasEnabledJourney(false).then(async function () {
+        const heading = await page.$eval('h2#heading-non-matching', e => e.innerHTML)
+        assert(heading.includes('Attributes for user with pid:'),'Actual: ' + heading)
+      })
+    }).timeout(10000)
+  })
 
-  // TODO: Disabling this test until we have fixed VSP with eIDAS
-  xit('with eIDAS should succeed', async () => {
-    await eidasEnabledJourney(true).then(async function () {
-      const heading = await page.$eval('h2#heading-non-matching', e => e.innerHTML)
-      assert(heading.includes('Attributes for user with pid:'),'Actual: ' + heading)
+  describe('when eIDAS is selected', () => {
+    // TODO: Disabling this test until we have fixed VSP with eIDAS
+    xit('should succeed', async () => {
+      await eidasEnabledJourney(true).then(async function () {
+        const heading = await page.$eval('h2#heading-non-matching', e => e.innerHTML)
+        assert(heading.includes('Attributes for user with pid:'),'Actual: ' + heading)
+      })
     })
   })
 })
