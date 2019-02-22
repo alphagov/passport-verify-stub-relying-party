@@ -11,34 +11,50 @@
 <table>
     <thead>
         <tr>
-            <th>Attribute Name</th><th>Attribute Value</th><th>Attribute Verified</th>
+            <th>Attribute Name</th>
+            <th>Attribute Value</th>
+            <th>Attribute Verified</th>
+            <th>From</th>
+            <th>To</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td><code>First Name</td>
-            <td><code>{{identity.attributes.firstName.value}}</code></td>
-            <td><code>{{identity.attributes.firstName.verified}}</code></td>
-        </tr>
-        {% for attribute in identity.attributes.middlenames %}
+        {% for firstname in identity.attributes.firstNames %}
           <tr>
-              <td><code>Middle Name</td>
-              <td><code>{{attribute.value}}</code></td>
-              <td><code>{{attribute.verified}}</code></td>
+              <td><code>First Name</code></td>
+              <td><code>{{firstname.value}}</code></td>
+              <td><code>{{firstname.verified}}</code></td>
+              <td><code>{{firstname.from}}</code></td>
+              <td><code>{{firstname.to}}</code></td>
           </tr>
         {% endfor %}
-        {% for attribute in identity.attributes.surnames %}
+        {% for middlename in identity.attributes.middleNames %}
           <tr>
-              <td><code>Surname</td>
-              <td><code>{{attribute.value}}</code></td>
-              <td><code>{{attribute.verified}}</code></td>
+              <td><code>Middle Name</code></td>
+              <td><code>{{middlename.value}}</code></td>
+              <td><code>{{middlename.verified}}</code></td>
+              <td><code>{{middlename.from}}</code></td>
+              <td><code>{{middlename.to}}</code></td>
           </tr>
         {% endfor %}
-        <tr>
-            <td><code>Date Of Birth</td>
-            <td><code>{{identity.attributes.dateOfBirth.value}}</code></td>
-            <td><code>{{identity.attributes.dateOfBirth.verified}}</code></td>
-        </tr>
+        {% for surname in identity.attributes.surnames %}
+          <tr>
+              <td><code>Surname</code></td>
+              <td><code>{{surname.value}}</code></td>
+              <td><code>{{surname.verified}}</code></td>
+              <td><code>{{surname.from}}</code></td>
+              <td><code>{{surname.to}}</code></td>
+          </tr>
+        {% endfor %}
+        {% for dob in identity.attributes.datesOfBirth %}
+          <tr>
+              <td><code>Date of Birth</code></td>
+              <td><code>{{dob.value}}</code></td>
+              <td><code>{{dob.verified}}</code></td>
+              <td><code>{{dob.from}}</code></td>
+              <td><code>{{dob.to}}</code></td>
+          </tr>
+        {% endfor %}
     </tbody>
 </table>
 </p>
@@ -73,6 +89,8 @@
         </table>
     </p>
 {% endif %}
+<h3 class="heading-small">Raw JSON view</h3>
+<code>{{ identity | dump('\t') }}</code>
 </main>
 {% endblock %}
 
