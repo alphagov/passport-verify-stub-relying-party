@@ -1,7 +1,7 @@
 {% extends "layouts/govuk_template.html" %}
 
 {% block head %}
-<link href="css/app.css" media="screen" rel="stylesheet">
+<link href="/css/app.css" media="screen" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -61,36 +61,34 @@
 {% if identity.attributes.addresses %}
     <h2 class="heading-medium">Addresses</h2>
     <p>
-        <table style="border-collapse: collapse;">
-            <thead> 
-                <th>Attribute Name</th><th>Attribute Value</th>
-            </thead>
+        <table>
             <tbody>
             {% for address in identity.attributes.addresses %}
+                {% set index = loop.index %}
                 {% for addressKey, addressValue in address %}
                     {% if addressKey == 'value' %}
                         {% for addressDataKey, addressDataValue in addressValue %}
-                            <tr>
+                            <tr class="{{ 'row-odd' if (index % 2) else 'row-even' }}">
                                 <td/>
                                 <td><code>{{addressDataKey}}</code></td>
                                 <td><code>{{addressDataValue}}</code></td>
                             </tr>
                         {% endfor %}
                     {% else %}
-                        <tr>
+                        <tr class="{{ 'row-odd' if (index % 2) else 'row-even' }}">
                             <td><code>{{addressKey}}</code></td>
                             <td><code>{{addressValue}}</code></td>
                         </tr>
                     {% endif %}
                 {% endfor %}
-                <tr style="border-top: 1px solid black; height: 5px;"><td>&nbsp;</td></tr>
+                <tr style="border:none"><td>&nbsp;</td></tr>
             {% endfor %}
             <tbody>
         </table>
     </p>
 {% endif %}
 <h3 class="heading-small">Raw JSON view</h3>
-<code>{{ identity | dump('\t') }}</code>
+<code style="white-space: pre;">{{ identity | dump('\t') }}</code>
 </main>
 {% endblock %}
 
