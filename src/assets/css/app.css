@@ -78,7 +78,7 @@ table th, table td {
     font-family: "nta", Arial, sans-serif;
     font-weight: 400;
     text-transform: none;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.25;
     padding: 0.63158em 1.05263em 0.47368em 0;
     text-align: left;
@@ -87,7 +87,7 @@ table th, table td {
 
 @media (min-width: 641px) {
     table th, table td {
-        font-size: 19px;
+        font-size: 14px;
         line-height: 1.31579;
     }
 }
@@ -122,7 +122,7 @@ table caption {
 
 @media (min-width: 641px) {
     .table-font-xsmall th {
-        font-size: 16px;
+        font-size: 14px;
         line-height: 1.25;
     }
 }
@@ -137,7 +137,7 @@ table caption {
 
 @media (min-width: 641px) {
     .table-font-xsmall td {
-        font-size: 16px;
+        font-size: 14px;
         line-height: 1.25;
     }
 }
@@ -148,4 +148,8 @@ table caption {
 
 img {
     max-width: 960px;
+}
+
+.even {
+    background-color: #005ea575;
 }
