@@ -38,13 +38,12 @@ describe('A non-matching journey', () => {
   })
 
   describe('when eIDAS is selected', () => {
-    // TODO: Disabling this test until we have fixed VSP with eIDAS
-    xit('should succeed', async () => {
+    it('should succeed', async () => {
       await eidasEnabledJourney(true).then(async function () {
         const heading = await page.$eval('h2#heading-non-matching', e => e.innerHTML)
         assert(heading.includes('Attributes for user with pid:'),'Actual: ' + heading)
       })
-    })
+    }).timeout(10000)
   })
 })
 
@@ -82,15 +81,17 @@ async function eidasEnabledJourney (selectEidas?: boolean) {
   await page.click('a.button-start')
   await page.waitForSelector('h1.heading-large')
   if (selectEidas) {
-    await page.click("a[href='/choose-a-country'")
+    await page.click("a[href='/choose-a-country']")
+    await page.waitForSelector("button[value='Stub IDP Demo']")
+    await page.click("button[value='Stub IDP Demo']")
   } else {
-    await page.click("a[href='/start'")
+    await page.click("a[href='/start']")
     await page.waitForSelector('input#start_form_selection_false')
     await page.click('input#start_form_selection_false')
     await page.click('input#next-button')
+    await page.waitForSelector("button[value='Stub Idp Demo One']")
+    await page.click("button[value='Stub Idp Demo One']")
   }
-  await page.waitForSelector("button[value='Stub Idp Demo One']")
-  await page.click("button[value='Stub Idp Demo One']")
   await page.waitForSelector('input#username')
   await page.type('input#username', selectEidas ? 'stub-country' : 'stub-idp-demo-one')
   await page.type('input#password', 'bar')
