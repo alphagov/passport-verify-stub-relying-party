@@ -142,7 +142,7 @@ export function createIdentityApp (verifyServiceProviderHost: string, entityId?:
       onAuthnFailed: () => {
         return res.render('authentication-failed-page.njk', { error: 'identity could not be verified' })
       },
-      onCancel: () => {
+      onNoAuthentication: () => {
         return res.render('authentication-failed-page.njk', { error: 'you cancelled' })
       },
       onError: (error) => renderErrorPage(res, error)

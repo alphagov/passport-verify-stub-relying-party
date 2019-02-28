@@ -57,10 +57,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/debug@4.1.0":
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/@types/debug/-/debug-4.1.0.tgz#f47877eca7cb38bbc94e716c044919bb54075828"
-  integrity sha512-QEYGliFbMQmDLZAcXJS+AbMDtnH0HjvgiALFbWPHsVn9dD75No+/MGEfpLCsAOWKg8WjtQxwfaPbRiq25XLYDw==
+"@types/debug@4.1.2":
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/@types/debug/-/debug-4.1.2.tgz#84824e9259fc583dd9385635738359c9582f7f82"
+  integrity sha512-jkf6UiWUjcOqdQbatbvOm54/YbCdjt3JjiAzT/9KS2XtMmOkYHdKsI5u8fulhbuTUuiqNBfa6J5GSDiwjK+zLA==
 
 "@types/escape-html@^0.0.20":
   version "0.0.20"
@@ -2197,12 +2197,12 @@ passport-strategy@1.x.x, passport-strategy@^1.0.0:
   resolved "https://registry.yarnpkg.com/passport-strategy/-/passport-strategy-1.0.0.tgz#b5539aa8fc225a3d1ad179476ddf236b440f52e4"
   integrity sha1-tVOaqPwiWj0a0XlHbd8ja0QPUuQ=
 
-passport-verify@2.0.0-rc.1:
-  version "2.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/passport-verify/-/passport-verify-2.0.0-rc.1.tgz#8a5b84dd8adf291df9bc6963d3bd80704289122a"
-  integrity sha512-3aQUSddsJh1pIsEyr0A9X8+EzrJOOhLC7L2/NibFEdovuaa6apWMICL7+SAgkSYPt1hJjHx6bwyJ4GTzUETctg==
+passport-verify@2.0.1-rc.1:
+  version "2.0.1-rc.1"
+  resolved "https://registry.yarnpkg.com/passport-verify/-/passport-verify-2.0.1-rc.1.tgz#bd6352df1afe26d7289bd9b414db3ee1f3599ef2"
+  integrity sha512-rpPbwRtT8f8TiFiMpkBC7QO8rCVdXWoRXXxU8/isOJmHpntDu3SFNAy6+q/w0xWYgdTUfVZtZNPCq+7/4bR+Pg==
   dependencies:
-    "@types/debug" "4.1.0"
+    "@types/debug" "4.1.2"
     "@types/escape-html" "^0.0.20"
     "@types/express-serve-static-core" "^4.0.48"
     "@types/form-data" "^2.2.0"

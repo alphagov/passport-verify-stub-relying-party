@@ -160,7 +160,7 @@ describe('Stub RP Application in a non-matching mode', function () {
     mockVerifyServiceProvider.post('/translate-response', (req, res, next) => {
       assert.equal(req.body.requestId, requestId)
       res.send({
-        scenario: Scenario.CANCELLATION
+        scenario: Scenario.NO_AUTHENTICATION
       })
     })
 
@@ -176,7 +176,7 @@ describe('Stub RP Application in a non-matching mode', function () {
       })
     })
 
-    it('should show the user cancellation page', () => {
+    it('should show the user no authentication page', () => {
       return client('http://localhost:3201/verify/start')
       .then(() => client({
         uri: 'http://localhost:3201/verify/response',
