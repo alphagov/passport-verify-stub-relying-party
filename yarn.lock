@@ -2197,10 +2197,10 @@ passport-strategy@1.x.x, passport-strategy@^1.0.0:
   resolved "https://registry.yarnpkg.com/passport-strategy/-/passport-strategy-1.0.0.tgz#b5539aa8fc225a3d1ad179476ddf236b440f52e4"
   integrity sha1-tVOaqPwiWj0a0XlHbd8ja0QPUuQ=
 
-passport-verify@2.0.1-rc.1:
-  version "2.0.1-rc.1"
-  resolved "https://registry.yarnpkg.com/passport-verify/-/passport-verify-2.0.1-rc.1.tgz#bd6352df1afe26d7289bd9b414db3ee1f3599ef2"
-  integrity sha512-rpPbwRtT8f8TiFiMpkBC7QO8rCVdXWoRXXxU8/isOJmHpntDu3SFNAy6+q/w0xWYgdTUfVZtZNPCq+7/4bR+Pg==
+passport-verify@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/passport-verify/-/passport-verify-2.0.1.tgz#b9b4a295e89ea72110b438fd81c84c5b5f17ca72"
+  integrity sha512-EaxmFgPDGyyPfHSGHE8EibRn3MJOIizROhDf6MMsZBU4TXIIXbU0GHlDoG00tbj7i6MiwYRNuodw17aj8vuqhA==
   dependencies:
     "@types/debug" "4.1.2"
     "@types/escape-html" "^0.0.20"
