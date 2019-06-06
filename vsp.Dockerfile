@@ -5,6 +5,7 @@ ARG GITHUB_TOKEN=""
 EXPOSE 50400
 
 COPY local-vsp-only.env /local-vsp-only.env
+COPY acceptance-tests/verify-service-provider-with-matching.yml /verify-service-provider-with-matching.yml
 
 RUN apt-get install -y unzip
 RUN apt-get install -y jq
@@ -17,4 +18,4 @@ RUN url="$(if [ -z "${GITHUB_TOKEN:-}" ];\
 
 RUN unzip -q verify-service-provider*.zip
 
-CMD /bin/bash -c 'source /local-vsp-only.env && cd verify-service-provider*/ && ./bin/verify-service-provider server ./verify-service-provider.yml'
+CMD /bin/bash -c 'source /local-vsp-only.env && cd verify-service-provider*/ && ./bin/verify-service-provider server ../verify-service-provider-with-matching.yml'
