@@ -30,7 +30,7 @@ function delay (timeout) {
 describe('A non-matching journey', () => {
   describe('when eIDAS is not selected', () => {
     it('should succeed', async () => {
-      await eidasEnabledJourney(false).then(async function () {
+      await eidasEnabledJourney(false, false).then(async function () {
         const heading = await page.$eval('h2#heading-non-matching', e => e.innerHTML)
         assert(heading.includes('Attributes for user with pid:'),'Actual: ' + heading)
       })
@@ -39,7 +39,16 @@ describe('A non-matching journey', () => {
 
   describe('when eIDAS is selected', () => {
     it('should succeed', async () => {
-      await eidasEnabledJourney(true).then(async function () {
+      await eidasEnabledJourney(true, false).then(async function () {
+        const heading = await page.$eval('h2#heading-non-matching', e => e.innerHTML)
+        assert(heading.includes('Attributes for user with pid:'),'Actual: ' + heading)
+      })
+    }).timeout(10000)
+  })
+
+  describe('when eIDAS assertions are unsigned', () => {
+    it('should succeed', async () => {
+      await eidasEnabledJourney(true, true).then(async function () {
         const heading = await page.$eval('h2#heading-non-matching', e => e.innerHTML)
         assert(heading.includes('Attributes for user with pid:'),'Actual: ' + heading)
       })
@@ -76,7 +85,7 @@ async function verifyJourney (matchUser?: boolean) {
   await delay(1500)
 }
 
-async function eidasEnabledJourney (selectEidas?: boolean) {
+async function eidasEnabledJourney (selectEidas?: boolean, unsignedAssertions?: boolean) {
   await page.goto(host, { waitUntil: 'networkidle2' })
   await page.click('a.button-start')
   await page.waitForSelector('h1.heading-large')
@@ -95,6 +104,9 @@ async function eidasEnabledJourney (selectEidas?: boolean) {
   await page.waitForSelector('input#username')
   await page.type('input#username', selectEidas ? 'stub-country' : 'stub-idp-demo-one')
   await page.type('input#password', 'bar')
+  if (unsignedAssertions) {
+    await page.click('input#assertionOptions_signAssertions')
+  }
   await page.click('input#login')
   await page.waitForSelector('input#agree')
   await page.click('input#agree')
