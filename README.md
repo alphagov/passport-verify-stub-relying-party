@@ -23,7 +23,7 @@ To use Passport-verify-stub-relying-party, you must have:
 
 * Node.js
 * Docker
-* Java8 JRE 
+* Java11 JRE 
 
 You must also configure and deploy:
 

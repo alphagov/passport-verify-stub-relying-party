@@ -1,4 +1,4 @@
-FROM govukverify/java8:latest
+FROM openjdk:11-jre-slim
 
 ARG GITHUB_TOKEN=""
 
@@ -7,8 +7,9 @@ EXPOSE 50400
 COPY local-vsp-only.env /local-vsp-only.env
 COPY acceptance-tests/verify-service-provider-with-matching.yml /verify-service-provider-with-matching.yml
 
-RUN apt-get install -y unzip
-RUN apt-get install -y jq
+RUN apt-get update &&\
+    apt-get install -y unzip jq curl wget &&\
+    apt-get clean
 
 RUN url="$(if [ -z "${GITHUB_TOKEN:-}" ];\
         then curl -s https://api.github.com/repos/alphagov/verify-service-provider/releases/latest | jq -r '.assets[0].browser_download_url';\
