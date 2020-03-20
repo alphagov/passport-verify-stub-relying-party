@@ -13,6 +13,7 @@ services:
         - ./database-schema.sql:/docker-entrypoint-initdb.d/database-schema.sql
     environment:
     - POSTGRES_DB=stub_rp_test
+    - POSTGRES_HOST_AUTH_METHOD=trust
   vsp:
     env_file:
         - local-vsp-only.env
