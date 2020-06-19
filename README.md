@@ -67,6 +67,20 @@ npm run test
 
 To run the full suite of tests, refer to the [acceptance test documentation](/docs/development/Running_Acceptance_Tests.md)
 
+To run the end-to-end tests using docker, first build a docker image:
+
+```
+docker build . -f ci/puppeteer.Dockerfile -t puppeteer
+```
+
+Then (while connected to the VPN) run something like:
+
+```
+docker run --network=host -v `pwd`:"/passport-verify-stub" -e "E2E_TEST_ENVIRONMENT=https://passport-verify-stub-relying-party-integration.cloudapps.digital" puppeteer /bin/sh -exc "cd passport-verify-stub; yarn install; yarn run e2e-tests:non-matching"
+```
+
+For valid combinations of environment URL and test suite (i.e. matching vs non-matching), see [the VSP Concourse pipeline](https://github.com/alphagov/verify-terraform/blob/master/environments/tools/platform/files/pipelines/verify-service-provider.yml).
+
 For development of passport-verify node module
 ----------------------------------------------
 If you want to run the service using a locally linked copy of 'passport-verify', be aware that TypeScript has a bug that duplicates dependencies. To get around this,  remove the following dependencies.
