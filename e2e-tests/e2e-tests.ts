@@ -88,7 +88,7 @@ async function verifyJourney (matchUser?: boolean) {
 async function eidasEnabledJourney (selectEidas?: boolean, unsignedAssertions?: boolean) {
   await page.goto(host, { waitUntil: 'networkidle2' })
   await page.click('a.button-start')
-  await page.waitForSelector('h1.heading-large')
+  await page.waitForXPath('//h1[text()="Prove your identity to continue"]')
   if (selectEidas) {
     await page.click("a[href='/choose-a-country']")
     await page.waitForSelector("button[value='Stub IDP Demo']")
