@@ -1,4 +1,4 @@
-FROM node:10-alpine
+FROM ghcr.io/alphagov/verify/node:lts-alpine3.12
 
 RUN apk update && apk upgrade && \
     apk add --no-cache chromium

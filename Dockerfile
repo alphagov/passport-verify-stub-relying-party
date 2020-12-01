@@ -1,4 +1,4 @@
-FROM node:10.15.1-slim
+FROM ghcr.io/alphagov/verify/node:lts-alpine3.12 
 
 EXPOSE 3200
 

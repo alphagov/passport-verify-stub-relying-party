@@ -1,4 +1,4 @@
-FROM openjdk:11-jre-slim
+FROM ghcr.io/alphagov/verify/java:openjdk-11
 
 ARG GITHUB_TOKEN=""
 

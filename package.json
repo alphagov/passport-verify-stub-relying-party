@@ -18,7 +18,7 @@
     "package": "npm run build && npm pack"
   },
   "engines": {
-    "node": "10.x"
+    "node": "14.x"
   },
   "author": "Verify",
   "license": "MIT",
