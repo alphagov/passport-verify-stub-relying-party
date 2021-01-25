@@ -24,11 +24,7 @@ if (!process.env['VERIFY_SERVICE_PROVIDER_HOST']) {
   console.log('Warning: VERIFY_SERVICE_PROVIDER_HOST not set, using localhost:50400 by default. Use the --paas flag to run against the service provider on paas.')
 }
 
-let complianceToolUrl = 'https://compliance-tool-reference.ida.digital.cabinet-office.gov.uk'
-if (process.env['COMPLIANCE_TOOL_URL']) {
-  complianceToolUrl = process.env['COMPLIANCE_TOOL_URL']
-}
-const COMPLIANCE_TOOL_HOST = complianceToolUrl
+const COMPLIANCE_TOOL_HOST = process.env['COMPLIANCE_TOOL_URL'] || 'https://compliance-tool-reference.ida.digital.cabinet-office.gov.uk'
 
 let DATABASE_CONNECTION_STRING = process.env['DATABASE_CONNECTION_STRING']
 if (!DATABASE_CONNECTION_STRING) {
