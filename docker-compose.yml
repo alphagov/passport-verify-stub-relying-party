@@ -6,6 +6,7 @@ services:
     environment:
         - DATABASE_CONNECTION_STRING=postgresql://postgres:@test-db:5432/stub_rp_test
         - VERIFY_SERVICE_PROVIDER_HOST=http://vsp:50400
+        - COMPLIANCE_TOOL_URL=https://compliance-tool-integration.cloudapps.digital
     command: /bin/bash -c "echo 'app container ready' && sleep 600"
   test-db:
     image: postgres
