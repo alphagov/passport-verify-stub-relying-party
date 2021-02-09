@@ -11,7 +11,7 @@ install:
   - docker-compose up -d --build
 
 script:
-  - docker exec app /bin/bash -c  "npm run pre-commit"
+  - docker exec app /bin/sh -c  "npm run pre-commit"
 
 after_failure:
   - docker-compose logs
