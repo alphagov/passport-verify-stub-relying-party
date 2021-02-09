@@ -1,4 +1,4 @@
-FROM node:10.15.1-slim
+FROM ghcr.io/alphagov/verify/node:10.23.2-alpine3.11
 
 EXPOSE 3200
 
