@@ -1,5 +1,5 @@
 FROM ghcr.io/alphagov/verify/node:10.23.2-alpine3.11
-
+RUN apk add --no-cache bash
 EXPOSE 3200
 
 WORKDIR /usr/src/app
