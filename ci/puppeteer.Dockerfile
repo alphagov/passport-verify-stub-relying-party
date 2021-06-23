@@ -1,4 +1,4 @@
-FROM node:10.23.2-alpine3.11@sha256:ab51a7c2f883929f6b82248595693e3954ecdf862a2d1104219fbe19bd78855d
+FROM node:10.23.2-alpine3.11
 
 RUN apk update && apk upgrade && \
     apk add --no-cache chromium
