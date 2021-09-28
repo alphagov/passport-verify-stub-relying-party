@@ -10,7 +10,9 @@ services:
     entrypoint: /bin/sh
     command: -c "echo 'app container ready' && sleep 600"
   test-db:
-    image: postgres
+    build:
+      context: .
+      dockerfile: db.Dockerfile
     volumes:
         - ./database-schema.sql:/docker-entrypoint-initdb.d/database-schema.sql
     environment:

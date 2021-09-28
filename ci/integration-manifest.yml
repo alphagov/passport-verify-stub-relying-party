@@ -3,5 +3,5 @@ applications:
     memory: 512M
     services:
       - ((database))
-    buildpack: nodejs_buildpack
+    buildpack: https://github.com/cloudfoundry/nodejs-buildpack.git#v1.7.41
     command: yarn start

@@ -1,7 +1,7 @@
 memory: 256M
 applications:
   - name: passport-verify-stub-relying-party-multi-two
-    buildpack: nodejs_buildpack
+    buildpack: https://github.com/cloudfoundry/nodejs-buildpack.git#v1.7.41
     command: yarn start
     env:
       VERIFY_SERVICE_PROVIDER_HOST: https://verify-service-provider-dev-multi.cloudapps.digital
