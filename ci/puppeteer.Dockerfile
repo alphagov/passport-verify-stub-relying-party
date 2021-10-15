@@ -1,4 +1,5 @@
-FROM node:10.23.2-alpine3.11
+ARG base_image=node:10.23.2-alpine3.11
+FROM ${base_image}
 
 RUN apk update && apk upgrade && \
     apk add --no-cache chromium
