@@ -1,0 +1,8 @@
+applications:
+  - name: ((app))
+    memory: 256M
+    buildpack: https://github.com/cloudfoundry/nodejs-buildpack.git#v1.7.41
+    command: yarn start
+    env:
+      VERIFY_SERVICE_PROVIDER_HOST:
+      MATCHING: 'false'
